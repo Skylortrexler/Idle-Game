@@ -7,6 +7,7 @@ window.onload = function(){
 var moneypersec = 0;
 var buildings = [];
 var BCost=[];
+var BCostBase=[];
 var BCostMul=1
 ////////////////////////////////////////////////////////////////////////////
 
@@ -33,6 +34,7 @@ function LoadBuilding(name,cost,persec){
 	Game.BQty[id] = 0;
 	}
 	BCost[id]=cost;
+	BCostBase[id]=cost;
 }
 //--Updates visuals for numbers at launch--//
 function InitData(){
@@ -40,8 +42,8 @@ function InitData(){
 	if(Game.Upgrades[0]==1){document.getElementById("MultiGain").disabled=true;}else{document.getElementById("MultiGain").disabled=false};
 	if(Game.Upgrades[0]==1){BCostMul=1.5}else{BCostMul=1};
 	
-	for(id=0;id<buildings.length;id++){//Calculate idrent cost of buildings
-	BCost[id]=round(BCost[id]*((1.3**Game.BQty[id])*BCostMul),0);
+	for(id=0;id<buildings.length;id++){//Calculate cost of buildings
+	BCost[id]=round((BCost[id]*((1.3**Game.BQty[id]))*BCostMul),0);
 	}
 	document.getElementById("money").innerHTML = Game.money;
 	document.getElementById("Building1Qty").innerHTML = "Sieve: " + Game.BQty[0];
@@ -88,8 +90,8 @@ function Build(id){
 	if (Game.money >= BCost[id]){
 		Game.money -= BCost[id];
 		Game.BQty[id] = Game.BQty[id]+1;
-		BCost[id]=round(BCost[id]*((1.3**Game.BQty[id])*BCostMul),0);
-		InitData();
+		BCost[id]=round((BCostBase[id]*((1.3**Game.BQty[id]))*BCostMul),0);
+		UpdateData();
 	}
 }
 
@@ -112,7 +114,7 @@ function reset(){
 }
 
 //--Save--//
-//var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
+var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
 function GameSave(){
 	window.localStorage['Idle.Game'] = JSON.stringify(Game);
 }

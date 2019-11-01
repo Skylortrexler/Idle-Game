@@ -1,6 +1,8 @@
 body{
 background: #CEAE77;	
 background: linear-gradient(to bottom, #CEAE77 0%, #4BD0EB 100%);
+margin:0px;
+padding:0px;
 }
 
 #title{
@@ -17,8 +19,9 @@ background: linear-gradient(to bottom, #CEAE77 0%, #4BD0EB 100%);
 }
 #bottombar{
 	text-align:center; 
-	position:sticky;
+	position:absolute;
 	Bottom:0;
+	width:100%;
 	border-top:2px;
 	border-top-style:solid;
 	background:#4BD0EB;
