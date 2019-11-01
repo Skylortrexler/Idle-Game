@@ -10,7 +10,12 @@ var BCost=[];
 var BCostBase=[];
 var BCostMul=1
 ////////////////////////////////////////////////////////////////////////////
-
+function disableitem(item){
+document.getElementById(item).className = document.getElementById(item).className + " locked";
+}
+function enableitem(item){
+document.getElementById(item).className = document.getElementById(item).className.replace(" locked","");
+}
 ////////////////////////////////////////////////////////////////////////////
 //--Loading Saves--//
 if(localStorage.getItem('Idle.Game') == null){
@@ -141,4 +146,5 @@ function UpdateTick(){
 function GatherMoney(){
 Game.money++;
 document.getElementById("money").innerHTML = Game.money;
+enableitem("stats");
 }

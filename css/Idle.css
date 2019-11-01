@@ -3,6 +3,7 @@ background: #CEAE77;
 background: linear-gradient(to bottom, #CEAE77 0%, #4BD0EB 100%);
 margin:0px;
 padding:0px;
+
 }
 
 #title{
@@ -46,6 +47,18 @@ padding:0px;
   padding: 10px;
   background: #5fcaed;
   text-decoration: none;
+  outline:none;
+}
+.moneybutton{
+	background: #5fcaed;
+	border-radius: 25px;
+	width:200px;
+	height:200px;
+	outline:none;
+}
+.moneybutton:hover {
+  background: #3cb0fd;
+  text-decoration: none;
 }
 .button:hover {
   background: #3cb0fd;
@@ -59,3 +72,4 @@ padding:0px;
 	margin-left:auto;
 	margin-right:auto;
 }
+.locked{display:none;}
