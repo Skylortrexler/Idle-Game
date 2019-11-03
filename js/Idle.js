@@ -11,11 +11,20 @@ var BCostBase=[];
 var BCostMul=1
 var moneyprogress=0
 ////////////////////////////////////////////////////////////////////////////
-function moneyclicktest(){
-	setTimeout(function(){GatherMoney();},1000)
-	window.setInterval(for(val=0;val<1000;val++)
-	moneyprogress=val), 1000;
-}
+function GatherMoney(){
+	document.getElementById("moneybutton").disabled=true;
+	bar1.set(100);
+	setTimeout(function(){
+		Game.money++;
+		document.getElementById("money").innerHTML = Game.money;
+		document.getElementById("moneybutton").disabled=false;
+		bar1.value=0;
+		},1000)
+};
+var bar1 = new ldBar("#moneybar",{
+	"duration":1,
+	"value":0
+});
 ////////////////////////////////////////////////////////////////////////////
 //--Loading Saves--//
 if(localStorage.getItem('Idle.Game') == null){
@@ -151,7 +160,7 @@ function UpdateTick(){
 	moneypersec = 0;
 }
 //--Gather money on click--//
-function GatherMoney(){
-Game.money++;
-document.getElementById("money").innerHTML = Game.money;
-}
+// function GatherMoney(){
+// Game.money++;
+// document.getElementById("money").innerHTML = Game.money;
+// }

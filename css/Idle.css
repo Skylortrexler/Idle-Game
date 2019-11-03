@@ -27,6 +27,9 @@ padding:0px;
 	border-top-style:solid;
 	background:#4BD0EB;
 }
+#moneybar{
+	margin:auto;
+}
 .block{
 	font-size:30px;
 	text-align: center;
@@ -53,7 +56,7 @@ padding:0px;
 	background: #5fcaed;
 	border-radius: 25px;
 	width:200px;
-	height:200px;
+	height:50px;
 	outline:none;
 }
 .moneybutton:hover {
