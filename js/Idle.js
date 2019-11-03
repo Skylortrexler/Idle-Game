@@ -9,12 +9,12 @@ var buildings = [];
 var BCost=[];
 var BCostBase=[];
 var BCostMul=1
+var moneyprogress=0
 ////////////////////////////////////////////////////////////////////////////
-function disableitem(item){
-document.getElementById(item).className = document.getElementById(item).className + " locked";
-}
-function enableitem(item){
-document.getElementById(item).className = document.getElementById(item).className.replace(" locked","");
+function moneyclicktest(){
+	setTimeout(function(){GatherMoney();},1000)
+	window.setInterval(for(val=0;val<1000;val++)
+	moneyprogress=val), 1000;
 }
 ////////////////////////////////////////////////////////////////////////////
 //--Loading Saves--//
@@ -118,6 +118,14 @@ function reset(){
 	}
 }
 
+//--disable and enable classes--//
+function disableitem(item){
+document.getElementById(item).className = document.getElementById(item).className + " locked";
+}
+function enableitem(item){
+document.getElementById(item).className = document.getElementById(item).className.replace(" locked","");
+}
+
 //--Save--//
 var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
 function GameSave(){
@@ -146,5 +154,4 @@ function UpdateTick(){
 function GatherMoney(){
 Game.money++;
 document.getElementById("money").innerHTML = Game.money;
-enableitem("stats");
 }

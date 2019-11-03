@@ -5,6 +5,8 @@
 			<link rel="stylesheet" type="text/css" href="css/Idle.css">
 				<script src="js/Idle.js">
 				</script>
+				<script scr="js/jquery-3.4.1.js">
+				</script>
 			</head>
 
 			<body>
@@ -14,16 +16,17 @@
 					</div>
 					<div id=content>
 						<div id=clickable>
-							<input id=moneybutton type=button class=moneybutton onclick=GatherMoney()>
+							<input id=moneybutton type=button class=moneybutton onclick=moneyclicktest()>
+							<div id=progressbar></div>
 							</div>
-							<div id=stats class="block locked">
+							<div id=stats class=block>
 						Stats
 								<div class=label>Gold</div>
 								<div id=money class=label>0</div>
 								<div class=label>Gold per second</div>
 								<div id=moneypersec class=label>0</div>
 							</div>
-							<div id=buyable class="block locked">
+							<div id=buyable class=block>
 						Buildings
 								<div id=Building1 class=buildings>
 									<div id=Building1Qty>Sieve: 0</div>
