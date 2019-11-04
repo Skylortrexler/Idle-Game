@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
@@ -12,34 +12,38 @@
 			<div id=title>Idle Game</div>
 				<div id=content>
 					<div id=clickable>
-						<input id=moneybutton type=button class=moneybutton onclick=GatherMoney()>
-					</div>
-					<div id=moneyprogress class=progress onclick=GatherMoney()>
-						<div class="progress-bar" id="MoneyBar" role="progressbar" style="width: 0%" onclick=GatherMoney()>
-						<span class="progress-bar-span" id=moneyprogressspan></span>
+						<div id=partstitle>Craft Parts</div>
+						<!-- <input id=moneybutton type=button class=moneybutton onclick=GatherMoney()> -->
+						<div id=partsprogress class=progress onclick=Gatherparts()>
+							<div class="progress-bar" id="partsBar" role="progressbar" style="width: 0%" onclick=Gatherparts()>
+							<span class="progress-bar-span" id=partsprogressspan>CLICK</span>
+							</div>
+							
 						</div>
 					</div>
 				</div>
 				<div id=stats class=block>
 							Stats
-							<div class=label>Gold</div>
-							<div id=money class=label>0</div>
-							<div class=label>Gold per second</div>
-							<div id=moneypersec class=label>0</div>
+							<div class=label1>Parts</div>
+							<div id=parts class=label2>0</div>
+							<div class=label1>Parts per second</div>
+							<div id=partspersec class=label2>0</div>
 				</div>
 				<div id=buyable class=block>
 					Buildings
+				</div>
+				<div class=block>
 					<div id=Building1 class=buildings>
 						<div id=Building1Qty>Sieve: 0</div>
-						<input type=button class=button value=Purchase onclick=Build(0);>
-						<div id=Building1Cost>Cost: 10 Gold</div>
-						<div id=Building1PerSec>Gold per second: 1</div>
+						<input type=button class=button value=Buy onclick=Build(0);>
+						<div id=Building1Cost class=label1>Cost: 10 Gold</div>
+						<div id=Building1PerSec class=label2>Parts per second: 1</div>
 					</div>
 					<div id=Building2 class=buildings>
 						<div id=Building2Qty>0</div>
-						<input type=button class=button value=Purchase onclick=Build(1);>
-						<div id=Building2Cost>100</div>
-						<div id=Building2PerSec>Gold per second: 5</div>
+						<input type=button class=button value=Buy onclick=Build(1);>
+						<div id=Building2Cost class=label1>Cost: 100 Gold</div>
+						<div id=Building2PerSec class=label2>Parts per second: 5</div>
 					</div>
 				</div>
 					<div id=upgrade class=block>

@@ -1,46 +1,33 @@
+/*palette
+#322923 Very dark (mostly black) orange [Brown tone].
+#513e2e Very dark desaturated orange.
+#896038 Dark moderate orange.
+#d7a05b Moderate orange.
+#eabe7c Soft orange.
+#cdb590 Slightly desaturated orange.
+#aa916a Mostly desaturated dark orange.
+#816f53 Mostly desaturated dark orange.
+*/
 body{
-background: #CEAE77;	
-background: linear-gradient(to bottom, #CEAE77 0%, #4BD0EB 100%);
+background-image: url("../img/bg.png"); /* https://loading.io/pattern/m-lines */
+/*background: #896038;*/
 margin:0px;
 padding:0px;
-
+color:#d7a05b;
 }
-.progress {
-	height: 20px;
-	margin-bottom: 20px;
-	overflow: hidden;
-	background-color: #f5f5f5;
-	border-radius: 5px;
-}
-.progress-bar { 
-	float: left;
-	width: 0;
-	height: 100%;
-	font-size: 12px;
-	line-height: 20px;
-	color: #999;
-	text-align: center;
-	background-color: #4BD0EB;
-}
-.progress-bar-span{
-	text-align: center;
-	margin:auto;
-}
-#moneyprogress{
-	width:200px;
+#partsprogress{
+	width:150px;
 	margin:auto;
 }
 #title{
 	font-size:50px;
 	font-weight: bold;
 	text-align: center;
-	margin-top: 50px;
+	margin-top: 20px;
+	margin-bottom:20px;
 }
-#game{
-}
-
 #clickable{
-	text-align:center;
+	/* text-align:center; */
 }
 #bottombar{
 	text-align:center; 
@@ -49,7 +36,29 @@ padding:0px;
 	width:100%;
 	border-top:2px;
 	border-top-style:solid;
-	background:#4BD0EB;
+	background:#322923;
+}
+#partstitle{
+	text-align:center;
+}
+.progress {
+	height: 20px;
+	margin-bottom: 20px;
+	overflow: hidden;
+	background-color: #816f53;
+	border-radius: 5px;
+
+}
+.progress-bar { 
+	float: left;
+	width: 0;
+	height: 100%;
+	font-size: 12px;
+	line-height: 20px;
+	color: #513e2e;
+	text-align: center;
+	background-color: #cdb590;
+	
 }
 .block{
 	font-size:30px;
@@ -62,38 +71,32 @@ padding:0px;
 	text-align:center;
 	padding:5px;
 }
-.label{
+.label1{
 	font-size:20px;
 }
-
+.label2{
+	font-size:16px;
+}
 .button {
 	border-radius: 10px;
-	padding: 10px;
-	background: #5fcaed;
+	padding: 5px;
+	background: #513e2e;
 	text-decoration: none;
 	outline:none;
+	color:#d7a05b;
+	border: 2px solid #d7a05b;
 }
-.moneybutton{
-	background: #5fcaed;
-	border-radius: 5px;
-	width:200px;
-	height:50px;
-	outline:none;
-}
-.moneybutton:hover {
-	background: #3cb0fd;
-	text-decoration: none;
-}
+
 .button:hover {
-	background: #3cb0fd;
+	background: #896038;
 	text-decoration: none;
+
 }
 .buildings{
-	border-width:1px;
-	border-style:solid;
 	margin-bottom:2px;
 	width:300px;
 	margin-left:auto;
 	margin-right:auto;
+	display:inline-block;
 }
 .locked{display:none;}

@@ -4,36 +4,19 @@ window.onload = function(){
 	GameSave();
 }
 //--Variables--//
-var moneypersec = 0;
+var partspersec = 0;
 var buildings = [];
 var BCost=[];
 var BCostBase=[];
 var BCostMul=1
+var partsprogress=0
+var canparts=0
+////////////////////////////////////////////////////////////////////////////
+
 
 ////////////////////////////////////////////////////////////////////////////
-var moneyprogress=0
-var canmoney=0
-function GatherMoney(){
-	if(canmoney==0){
-//		document.getElementById("moneybutton").disabled=true;
-		canmoney=1;
-		moneyprogress=0;
-		var progresstimer = window.setInterval(function(){
-			moneyprogress++
-			document.getElementById("MoneyBar").style.width=moneyprogress+"%";
-			document.getElementById("moneyprogressspan").innerHTML=moneyprogress+"%";
-			if(moneyprogress>=100){
-				Game.money++;
-				clearInterval(progresstimer);
-				document.getElementById("MoneyBar").style.width=moneyprogress+"%";
-				document.getElementById("money").innerHTML = Game.money;
-				canmoney=0;
-//				document.getElementById("moneybutton").disabled=false;
-			};
-		}, 10);
-	};
-};
-////////////////////////////////////////////////////////////////////////////
+
+
 //--Loading Saves--//
 if(localStorage.getItem('Idle.Game') == null){
 	var Game = new GameData();
@@ -58,6 +41,8 @@ function LoadBuilding(name,cost,persec){
 	BCost[id]=cost;
 	BCostBase[id]=cost;
 }
+
+
 //--Updates visuals for numbers at launch--//
 function InitData(){
 	
@@ -67,26 +52,30 @@ function InitData(){
 	for(id=0;id<buildings.length;id++){//Calculate cost of buildings
 	BCost[id]=round((BCost[id]*((1.3**Game.BQty[id]))*BCostMul),0);
 	}
-	document.getElementById("money").innerHTML = Game.money;
+	document.getElementById("parts").innerHTML = Game.parts;
 	document.getElementById("Building1Qty").innerHTML = "Sieve: " + Game.BQty[0];
 	document.getElementById("Building1Cost").innerHTML = "Cost: " + BCost[0];
 	document.getElementById("Building2Qty").innerHTML = "Mine: " + Game.BQty[1];
 	document.getElementById("Building2Cost").innerHTML = "Cost: " + BCost[1];
 
 }
+
+
 //--Updates visuals for numbers at call--//
 function UpdateData(){
-	document.getElementById("money").innerHTML = Game.money;
+	document.getElementById("parts").innerHTML = Game.parts;
 	document.getElementById("Building1Qty").innerHTML = "Sieve: " + Game.BQty[0];
 	document.getElementById("Building1Cost").innerHTML = "Cost: " + BCost[0];
 	document.getElementById("Building2Qty").innerHTML = "Mine: " + Game.BQty[1];
 	document.getElementById("Building2Cost").innerHTML = "Cost: " + BCost[1];
 }
+
+
 //--Parents--//
 function GameData(){
 	this.name="Idle Game"
 	this.description="This is an Idle Game"
-	this.money = 0;
+	this.parts = 0;
 	this.BQty=[]
 	this.Upgrades=[];
 }
@@ -96,10 +85,12 @@ function Building() {
 	this.PerSec = 0;
 }
 
+
 //--Rounding--//
 function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
+
 
 //--Upgrades--//
 function BuyUpgrade(id){
@@ -107,17 +98,30 @@ function BuyUpgrade(id){
 	InitData();
 }
 
+
 //--Build and Validity Check--//
 function Build(id){
-	if (Game.money >= BCost[id]){
-		Game.money -= BCost[id];
+	if (Game.parts >= BCost[id]){
+		Game.parts -= BCost[id];
 		Game.BQty[id] = Game.BQty[id]+1;
 		BCost[id]=round((BCostBase[id]*((1.3**Game.BQty[id]))*BCostMul),0);
 		UpdateData();
 	}
 }
 
+
 //--Reset--//
+function reset(){
+	if(window.confirm("This will wipe all of your savedata! Are you sure?")){
+		Game = new GameData();
+		ClearBuildings();
+		ClearProgressbars();
+		InitData();
+		GameSave();
+		console.log('Wiped save')
+		
+	}
+}
 function ClearBuildings(){
 	for(id=0;id<buildings.length;id++){
 		Game.BQty[id] = 0;
@@ -125,15 +129,13 @@ function ClearBuildings(){
 	buildings = []
 	InitBuildings();
 }
-function reset(){
-	if(window.confirm("This will wipe all of your savedata! Are you sure?")){
-		Game = new GameData();
-		ClearBuildings();
-		InitData();
-		GameSave();
-		console.log('Wiped save')
-	}
+function ClearProgressbars(){
+		partsprogress=0;
+		document.getElementById("partsBar").style.width=partsprogress+"%";
+		document.getElementById("partsprogressspan").innerHTML=partsprogress+"%";
 }
+
+
 
 //--disable and enable classes--//
 function disableitem(item){
@@ -143,6 +145,7 @@ function enableitem(item){
 document.getElementById(item).className = document.getElementById(item).className.replace(" locked","");
 }
 
+
 //--Save--//
 var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
 function GameSave(){
@@ -151,24 +154,44 @@ function GameSave(){
 function ManualSave(){
 	GameSave();
 }
+
+
 //Global tick timer
-var TimerMoney = window.setInterval(function(){MoneyTick()}, 1000);
+var Timerparts = window.setInterval(function(){partsTick()}, 1000);
 var TimerUpdate = window.setInterval(function(){UpdateTick()}, 250);
-function MoneyTick(){
+function partsTick(){
 	for (var MT = 0;MT < buildings.length;MT++) {
-		Game.money += Game.BQty[MT]* buildings[MT].PerSec;
-		document.getElementById("money").innerHTML = Game.money;
+		Game.parts += Game.BQty[MT]* buildings[MT].PerSec;
+		document.getElementById("parts").innerHTML = Game.parts;
 	}
 }
 function UpdateTick(){
 	for(var UT = 0;UT < buildings.length;UT++){
-		moneypersec = moneypersec+(Game.BQty[UT]*buildings[UT].PerSec);
+		partspersec = partspersec+(Game.BQty[UT]*buildings[UT].PerSec);
 	}
-	document.getElementById("moneypersec").innerHTML = moneypersec;
-	moneypersec = 0;
+	document.getElementById("partspersec").innerHTML = partspersec;
+	partspersec = 0;
 }
-//--Gather money on click--//
-// function GatherMoney(){
-// Game.money++;
-// document.getElementById("money").innerHTML = Game.money;
-// }
+
+
+//--Gather parts on click--//
+function Gatherparts(){
+	if(canparts==0){
+//		document.getElementById("moneybutton").disabled=true;
+		canparts=1;
+		partsprogress=0;
+		var progresstimer = window.setInterval(function(){
+			partsprogress++
+			document.getElementById("partsBar").style.width=partsprogress+"%";
+			document.getElementById("partsprogressspan").innerHTML=partsprogress+"%";
+			if(partsprogress>=100){
+				Game.parts++;
+				clearInterval(progresstimer);
+				document.getElementById("partsBar").style.width=partsprogress+"%";
+				document.getElementById("parts").innerHTML = Game.parts;
+				canparts=0;
+//				document.getElementById("moneybutton").disabled=false;
+			};
+		}, 10);
+	};
+};
