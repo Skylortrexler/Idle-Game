@@ -10,7 +10,7 @@
   text-shadow: 0 0 3px #fff;
 }
 .ldBar-label:after {
-  content: "%";
+  content: "";
   display: inline;
 }
 .ldBar.no-percent .ldBar-label:after {

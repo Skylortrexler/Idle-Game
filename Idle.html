@@ -1,60 +1,57 @@
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
 			<title>Idle Game</title>
-			<script src="js/loading-bar.js">
-			</script>
-			<link rel="stylesheet" type="text/css" href="css/loading-bar.css">
-				<script src="js/Idle.js" defer>
-				</script>
-				<link rel="stylesheet" type="text/css" href="css/Idle.css">
-				</head>
+			<script src="js/Idle.js" defer></script>
+			<link rel="stylesheet" type="text/css" href="css/Idle.css">
+	</head>
 
-				<body>
-					<div id=game>
-						<div id=title>
-					Idle Game
+	<body>
+		<div id=game>
+			<div id=title>Idle Game</div>
+				<div id=content>
+					<div id=clickable>
+						<input id=moneybutton type=button class=moneybutton onclick=GatherMoney()>
+					</div>
+					<div id=moneyprogress class=progress onclick=GatherMoney()>
+						<div class="progress-bar" id="MoneyBar" role="progressbar" style="width: 0%" onclick=GatherMoney()>
+						<span class="progress-bar-span" id=moneyprogressspan></span>
 						</div>
-						<div id=content>
-							<div id=clickable>
-								<input id=moneybutton type=button class=moneybutton onclick=GatherMoney()>
-								</div>
-								<div id=moneybar class=ldBar>
-								</div>
-								<div id=stats class=block>
-						Stats
-									<div class=label>Gold</div>
-									<div id=money class=label>0</div>
-									<div class=label>Gold per second</div>
-									<div id=moneypersec class=label>0</div>
-								</div>
-								<div id=buyable class=block>
-						Buildings
-									<div id=Building1 class=buildings>
-										<div id=Building1Qty>Sieve: 0</div>
-										<input type=button class=button value=Purchase onclick=Build(0);>
-											<div id=Building1Cost>Cost: 10 Gold</div>
-											<div id=Building1PerSec>Gold per second: 1</div>
-										</div>
-										<div id=Building2 class=buildings>
-											<div id=Building2Qty>0</div>
-											<input type=button class=button value=Purchase onclick=Build(1);>
-												<div id=Building2Cost>100</div>
-												<div id=Building2PerSec>Gold per second: 5</div>
-											</div>
-										</div>
-										<div id=upgrade class=block>
+					</div>
+				</div>
+				<div id=stats class=block>
+							Stats
+							<div class=label>Gold</div>
+							<div id=money class=label>0</div>
+							<div class=label>Gold per second</div>
+							<div id=moneypersec class=label>0</div>
+				</div>
+				<div id=buyable class=block>
+					Buildings
+					<div id=Building1 class=buildings>
+						<div id=Building1Qty>Sieve: 0</div>
+						<input type=button class=button value=Purchase onclick=Build(0);>
+						<div id=Building1Cost>Cost: 10 Gold</div>
+						<div id=Building1PerSec>Gold per second: 1</div>
+					</div>
+					<div id=Building2 class=buildings>
+						<div id=Building2Qty>0</div>
+						<input type=button class=button value=Purchase onclick=Build(1);>
+						<div id=Building2Cost>100</div>
+						<div id=Building2PerSec>Gold per second: 5</div>
+					</div>
+				</div>
+					<div id=upgrade class=block>
 						Upgrades
-											<div id=Upgrade1 class=upgrade>
-												<input id=MultiGain type=button class=button value=MultiGain onclick=BuyUpgrade(0);>
-												</div>
-											</div>
-										</div>
-
-										<div id=bottombar>
-											<input type=button class=button value=reset onclick=reset();>
-												<input type=button class=button value=save onclick=ManualSave();>
-												</div>
-											</body>
-										</div>
-									</html>
+						<div id=Upgrade1 class=upgrade>
+							<input id=MultiGain type=button class=button value=MultiGain onclick=BuyUpgrade(0);>
+						</div>
+					</div>
+		</div>
+		<div id=bottombar>
+			<input type=button class=button value=reset onclick=reset();>
+			<input type=button class=button value=save onclick=ManualSave();>
+		</div>
+	</body>
+</html>

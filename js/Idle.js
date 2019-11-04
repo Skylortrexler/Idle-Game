@@ -9,22 +9,30 @@ var buildings = [];
 var BCost=[];
 var BCostBase=[];
 var BCostMul=1
-var moneyprogress=0
+
 ////////////////////////////////////////////////////////////////////////////
+var moneyprogress=0
+var canmoney=0
 function GatherMoney(){
-	document.getElementById("moneybutton").disabled=true;
-	bar1.set(100);
-	setTimeout(function(){
-		Game.money++;
-		document.getElementById("money").innerHTML = Game.money;
-		document.getElementById("moneybutton").disabled=false;
-		bar1.value=0;
-		},1000)
+	if(canmoney==0){
+//		document.getElementById("moneybutton").disabled=true;
+		canmoney=1;
+		moneyprogress=0;
+		var progresstimer = window.setInterval(function(){
+			moneyprogress++
+			document.getElementById("MoneyBar").style.width=moneyprogress+"%";
+			document.getElementById("moneyprogressspan").innerHTML=moneyprogress+"%";
+			if(moneyprogress>=100){
+				Game.money++;
+				clearInterval(progresstimer);
+				document.getElementById("MoneyBar").style.width=moneyprogress+"%";
+				document.getElementById("money").innerHTML = Game.money;
+				canmoney=0;
+//				document.getElementById("moneybutton").disabled=false;
+			};
+		}, 10);
+	};
 };
-var bar1 = new ldBar("#moneybar",{
-	"duration":1,
-	"value":0
-});
 ////////////////////////////////////////////////////////////////////////////
 //--Loading Saves--//
 if(localStorage.getItem('Idle.Game') == null){
