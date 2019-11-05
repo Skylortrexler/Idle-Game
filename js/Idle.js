@@ -190,7 +190,7 @@ function partsTick(){
 }
 function UpdateTick(){
 	for(var UT = 0;UT < buildings.length;UT++){
-		partspersec = partspersec+(Game.BQty[UT]*buildings[UT].PerSec);//multiplies all buildings by their quatites and then adds them all together
+		partspersec = round(partspersec+(Game.BQty[UT]*buildings[UT].PerSec),1);//multiplies all buildings by their quatites and then adds them all together
 	}
 	document.getElementById("partspersec").innerHTML = partspersec;
 	partspersec = 0;//reset to zero is required or it will loop on itself

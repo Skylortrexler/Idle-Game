@@ -8,64 +8,74 @@
 
 	<body>
 		<div id=game>
-			<div id=title>Idle Game</div>
-				<div id=content>
-					<div id=clickable>
-						<div id=partstitle>Craft a part</div>
+				<div id=clickable class=block>
+					<div id=partstitle>Craft a part</div>
 						<!-- <input id=moneybutton type=button class=moneybutton onclick=GatherMoney()> -->
-						<div id=partsprogress class=progress onclick=Gatherparts()>
-							<div class="progress-bar" id="partsBar" role="progressbar" style="width: 0%" onclick=Gatherparts()>
-							<span class="progress-bar-span" id=partsprogressspan>CLICK</span>
-							</div>
-							
-						</div>
-						<div class=block>
-							<input id=sellparts type=button class=button value="Sell Parts" onclick=sellparts()>
-						</div>
+					<div id=partsprogress class=progress onclick=Gatherparts()>
+						<div class="progress-bar" id="partsBar" role="progressbar" style="width: 0%" onclick=Gatherparts()>
+						<span class="progress-bar-span" id=partsprogressspan>CLICK</span>
+						</div>		
+					</div>
+					<div class=block>
+						<input id=sellparts type=button class=button value="Sell Parts" onclick=sellparts()>
 					</div>
 				</div>
-				<div id=stats class=block>
+				<div id=stat-container class=block>
 					<div id=stattitle>Stats</div>
-					<div id=label1block class=statblock>
-						<div class=label1>Parts</div>
-						<div id=parts class=label2>0</div>
-						<div class=label1>Parts per second</div>
-						<div id=partspersec class=label2>0</div>
-					</div>
-					<div id=label2block class=statblock>
-						<div class=label2>Money</div>
-						<div id=money class=label2>0</div>
-						<div class=label2>Money per second</div>
-						<div id=moneypersec class=label2>0</div>
-					</div>
-				</div>
-				<div id=buyable class=block>
-					Buildings
-				</div>
-				<div class=block>
-					<div id=Building1 class=buildings>
-						<div id=Building1Qty>0</div>
-						<input type=button class=button value=Buy onclick=Build(0);>
-						<div id=Building1Cost class=label1>Cost: 10 Gold</div>
-						<div id=Building1PerSec class=label2></div>
-					</div>
-					<div id=Building2 class=buildings>
-						<div id=Building2Qty>0</div>
-						<input type=button class=button value=Buy onclick=Build(1);>
-						<div id=Building2Cost class=label1>Cost: 100 Gold</div>
-						<div id=Building2PerSec class=label2></div>
-					</div>
-				</div>
-					<div id=upgrade class=block>
-						Upgrades
-						<div id=Upgrade1 class=upgrade>
-							<input id=MultiGain type=button class=button value=MultiGain onclick=BuyUpgrade(0);>
+					<div id=stats class=block>
+						<div id=Statblock1 class=stats>
+							<div class=label1>Parts</div>
+							<div id=parts class=label2>0</div>
+							<div class=label1>Parts per second</div>
+							<div id=partspersec class=label2>0</div>
+						</div>
+						<div id=Statblock2 class=stats>
+							<div class=label1>Money</div>
+							<div id=money class=label2>0</div>
+							<div class=label1>Money per second</div>
+							<div id=moneypersec class=label2>0</div>
 						</div>
 					</div>
-		</div>
-		<div id=bottombar>
-			<input type=button class=button value=reset onclick=reset();>
-			<input type=button class=button value=save onclick=ManualSave();>
+				</div>
+				
+				<div id=building-container class=block>
+					<div id=buildingtitle>Buildings</div>
+					<div id=buildings class=block>
+						<div id=Building1 class=buildings>
+							<input type=button class=button value=Buy onclick=Build(0);>
+							<div id=Building1Qty class=label1>0</div>
+							<div id=Building1Cost class=label1>Cost: 10 Gold</div>
+							<div id=Building1PerSec class=label2></div>
+						</div>
+						<div id=Building2 class=buildings>
+							<input type=button class=button value=Buy onclick=Build(1);>
+							<div id=Building2Qty class=label1>0</div>
+							<div id=Building2Cost class=label1>Cost: 100 Gold</div>
+							<div id=Building2PerSec class=label2></div>
+						</div>
+					</div>
+				</div>
+					<div id=upgrade-container class=block>
+						<div id=>Upgrades</div>
+						<div id=Upgrades class=block>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+							<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>
+						</div>
+					</div>
+			<div id=options class="block options">
+				<input type=button class="button bottom" value=reset onclick=reset();>
+				<input type=button class="button bottom" value=save onclick=ManualSave();>
+			</div>
 		</div>
 	</body>
 </html>
