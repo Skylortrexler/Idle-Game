@@ -47,7 +47,7 @@ color:#d7a05b;
 	overflow: hidden;
 	background-color: #816f53;
 	border-radius: 5px;
-
+	border: 2px solid #d7a05b;
 }
 .progress-bar { 
 	float: left;
@@ -58,7 +58,6 @@ color:#d7a05b;
 	color: #513e2e;
 	text-align: center;
 	background-color: #cdb590;
-	
 }
 .block{
 	font-size:30px;
@@ -70,6 +69,18 @@ color:#d7a05b;
 	margin-bottom:10px;
 	text-align:center;
 	padding:5px;
+}
+.statblock{
+	font-size:30px;
+	text-align: center;
+	margin-top: 30px;
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:10px;
+	margin-bottom:10px;
+	text-align:center;
+	padding:5px;
+	display:inline-block;
 }
 .label1{
 	font-size:20px;
