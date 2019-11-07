@@ -8,33 +8,35 @@ var partspersec = 0;
 var buildings = [];
 var BCost=[];
 var BCostBase=[];
-var BCostMul=1
-var partsprogress=0
-var canparts=0
+var BCostMul=1;
+var partsprogress=0;
+var canparts=0;
+var sellprogress=0;
+var canmoney=0;
 ////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////
 
 
 //--Loading Saves--//
-if(localStorage.getItem('Idle.Game') == null){
+if(localStorage.getItem('IdleParts.GameSave') == null){
 	var Game = new GameData();
 } else {
-	var Game = JSON.parse(localStorage.getItem('Idle.Game'));
+	var Game = JSON.parse(localStorage.getItem('IdleParts.GameSave'));
 }
 
 
 //--Dynamically creates buildings--//
 function InitBuildings(){//name,cost,persec
 	LoadBuilding("Employee",10,0.2);
-	LoadBuilding("Robot",100,5);
+	LoadBuilding("Robot",100,1);
 }
 function LoadBuilding(name,cost,persec){
 	var id = buildings.length;
 	buildings[id] = new Building();
 	buildings[id].Name = name;
 	buildings[id].PerSec = persec;
-	if(localStorage.getItem('Idle.Game') == null){
+	if(localStorage.getItem('IdleParts.GameSave') == null){
 	Game.BQty[id] = 0;
 	}
 	BCost[id]=cost;
@@ -44,10 +46,12 @@ function LoadBuilding(name,cost,persec){
 
 //--Updates visuals for numbers at launch--//
 function InitData(){
-	
-	if(Game.Upgrades[0]==1){document.getElementById("MultiGain").disabled=true;}else{document.getElementById("MultiGain").disabled=false};
-	if(Game.Upgrades[0]==1){BCostMul=1.5}else{BCostMul=1};
-	
+	if(Game.Upgrades[0]==1){
+		document.getElementById("MultiGain").disabled=true;
+	}else{
+		document.getElementById("MultiGain").disabled=false};
+	if(Game.Upgrades[0]==1){
+		BCostMul=1.5}else{BCostMul=1};
 	for(id=0;id<buildings.length;id++){//Calculate cost of buildings
 	BCost[id]=round((BCost[id]*((1.3**Game.BQty[id]))*BCostMul),0);
 	}
@@ -83,8 +87,6 @@ function UpdateParts(){
 
 //--Parents--//
 function GameData(){
-	this.name="Idle Game"
-	this.description="This is an Idle Game"
 	this.parts = 0;
 	this.BQty=[]
 	this.Upgrades=[];
@@ -110,13 +112,6 @@ function rounddown(value, decimals) {
 function BuyUpgrade(id){
 	Game.Upgrades[id]=1;
 	InitData();
-}
-
-//--Selling parts--//
-function sellparts(){
-	Game.money+=rounddown(Game.parts,0);
-	Game.parts=0;
-	UpdateData();
 }
 
 
@@ -170,7 +165,7 @@ document.getElementById(item).className = document.getElementById(item).classNam
 //--Save--//
 var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
 function GameSave(){
-	window.localStorage['Idle.Game'] = JSON.stringify(Game);
+	window.localStorage['IdleParts.GameSave'] = JSON.stringify(Game);
 }
 function ManualSave(){
 	GameSave();
@@ -221,3 +216,27 @@ function Gatherparts(){
 		}, 20);
 	};
 };
+
+//--Selling parts--//
+function sellparts(){
+	if(canmoney==0){
+		canmoney=1;
+		sellprogress=0;
+		var progresstimer2 = window.setInterval(function(){
+			sellprogress++;
+			document.getElementById("moneyBar").style.width=sellprogress+"%";
+			document.getElementById("moneyprogressspan").innerHTML=sellprogress+"%";
+			if(sellprogress>=100){
+				Game.money+=rounddown(Game.parts,0);
+				Game.parts=0;
+				clearInterval(progresstimer2);
+				document.getElementById("moneyBar").style.width=sellprogress+"%";
+				document.getElementById("money").innerHTML = Game.money;
+				document.getElementById("parts").innerHTML = Game.parts;
+				canmoney=0;
+			};
+		},50);
+	}
+};
+
+

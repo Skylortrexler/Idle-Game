@@ -90,9 +90,16 @@ bottom:0;
 .button:hover {
 	background: #896038;
 	text-decoration: none;
-
 }
-
+.button:disabled{
+	border-radius: 10px;
+	padding: 5px;
+	background: #322923;
+	text-decoration: none;
+	outline:none;
+	color:#896038;
+	border: 2px solid #896038;
+}
 /* crafting part bar */
 #partsprogress{
 	width:150px;
