@@ -4,29 +4,45 @@
 			<title>Idle Game</title>
 			<script src="js/Idle.js" defer></script>
 			<link rel="stylesheet" type="text/css" href="css/Idle.css">
+			<link href="https://fonts.googleapis.com/css?family=Abel&display=swap" rel="stylesheet">
 	</head>
 
 	<body>
 		<div id=game>
-			<div id=clickable class=block>
-				<div id=partstitle>Craft a part (2s)</div>
+			<div id=Selling-container class=block>
+				<div id=money1title class=label1>Sell parts (5s)</div>
+				<div id=money1progress class=progress onclick=sellparts()>
+					<div class="progress-bar" id=money1Bar role="progressbar" style="width: 0%" onclick=sellparts()>
+					<span class="progress-bar-span" id=money1progressspan>CLICK</span>
+					</div>		
+				</div>
+				<div id=money2title class=label1>Sell C1 (5s)</div>
+				<div id=money2progress class=progress onclick=sellC1()>
+					<div class="progress-bar" id=money2Bar role="progressbar" style="width: 0%" onclick=sellC1()>
+					<span class="progress-bar-span" id=money2progressspan>CLICK</span>
+					</div>		
+				</div>
+			</div>
+				
+			<div id=crafting-container class=block>
+				<div id=partstitle class=label1>Craft a part (2s)</div>
 					<!-- <input id=moneybutton type=button class=moneybutton onclick=GatherMoney()> -->
 				<div id=partsprogress class=progress onclick=Gatherparts()>
 					<div class="progress-bar" id=partsBar role="progressbar" style="width: 0%" onclick=Gatherparts()>
 					<span class="progress-bar-span" id=partsprogressspan>CLICK</span>
 					</div>		
 				</div>
-				<div id=moneytitle>Sell parts (5s)</div>
-				<div id=moneyprogress class=progress onclick=sellparts()>
-					<div class="progress-bar" id=moneyBar role="progressbar" style="width: 0%" onclick=sellparts()>
-					<span class="progress-bar-span" id=moneyprogressspan>CLICK</span>
-					</div>		
+				<div id=C1Title class=label1>Craft C1 (50 parts)(10s)</div>
+				<div id=C1Progress class=progress onclick=CraftC1()>
+					<div class="progress-bar" id=C1Bar role="progressbar" style="width: 0%" onclick=CraftC1()>
+					<span class="progress-bar-span" id=C1Progressspan>CLICK</span>
+					</div>
 				</div>
 			</div>
 				
 			<div id=stat-container class=block>
-				<div id=stattitle>Stats</div>
-				<div id=stats class=block>
+				<!-- <div id=stattitle>Stats</div> -->
+				<div id=stats >
 					<div id=Statblock1 class=stats>
 						<div class=label1>Parts</div>
 						<div id=parts class=label2>0</div>
@@ -39,6 +55,10 @@
 						<div class=label1>Money per second</div>
 						<div id=moneypersec class=label2>0</div>
 					</div>
+					<div id=Statblock3 class=stats>
+						<div class=label1>C1</div>
+						<div id=C1Qty class=label2>0</div>
+					</div>
 				</div>
 			</div>
 				
@@ -48,13 +68,13 @@
 					<div id=Building1 class=buildings>
 						<input type=button class=button value=Buy onclick=Build(0);>
 						<div id=Building1Qty class=label1>0</div>
-						<div id=Building1Cost class=label1>Cost: 10 Gold</div>
+						<div id=Building1Cost class=label1>Cost: 10</div>
 						<div id=Building1PerSec class=label2></div>
 					</div>
 					<div id=Building2 class=buildings>
 						<input type=button class=button value=Buy onclick=Build(1);>
 						<div id=Building2Qty class=label1>0</div>
-						<div id=Building2Cost class=label1>Cost: 100 Gold</div>
+						<div id=Building2Cost class=label1>Cost: 100</div>
 						<div id=Building2PerSec class=label2></div>
 					</div>
 				</div>
@@ -63,7 +83,9 @@
 			<div id=upgrade-container class=block>
 				<div id=>Upgrades</div>
 				<div id=Upgrades class=block>
-					<input id=MultiGain type=button class="upgrade button" value=MultiGain onclick=BuyUpgrade(0);>	
+					<input id=CostCheap type=button class="upgrade button" value=CostCheap onclick=BuyUpgrade(0);>	
+					<input id=ProductionMulti type=button class="upgrade button" value=ProdMulti onclick=BuyUpgrade(1);>	
+
 				</div>
 			</div>
 			

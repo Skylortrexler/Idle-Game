@@ -1,18 +1,30 @@
 window.onload = function(){
 	InitBuildings();
+	InitItems();
 	InitData();
 	GameSave();
 }
+
+function InitData(){
+	UpdateUpgrades();
+	UpdateData();
+	UpdateTick();
+}
+
 //--Variables--//
 var partspersec = 0;
-var buildings = [];
-var BCost=[];
-var BCostBase=[];
-var BCostMul=1;
-var partsprogress=0;
-var canparts=0;
-var sellprogress=0;
-var canmoney=0;
+	buildings = [];
+	BCostMul=1;
+	partsprogress=0;
+	canparts=0;
+	sellprogress=0;
+	canmoney=0;
+	ProdMulti=1;
+	canC1=0;
+	C1progress=0;
+	Items=[];
+	canmoney2=0;
+
 ////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////
@@ -26,64 +38,77 @@ if(localStorage.getItem('IdleParts.GameSave') == null){
 }
 
 
-//--Dynamically creates buildings--//
+//--Dynamically create objects--//
+function InitItems(){
+	LoadItem("C1",100);
+}
+function LoadItem(name,value){
+	var id = Items.length;
+	Items[id]=new Item();
+	Items[id].Name=name;
+	Items[id].Value=value;
+	if(localStorage.getItem('IdleParts.GameSave') == null){
+	Game.Items[id] = 0;
+	}
+}
+
 function InitBuildings(){//name,cost,persec
 	LoadBuilding("Employee",10,0.2);
-	LoadBuilding("Robot",100,1);
+	LoadBuilding("Robot",1000,1);
 }
 function LoadBuilding(name,cost,persec){
 	var id = buildings.length;
 	buildings[id] = new Building();
 	buildings[id].Name = name;
 	buildings[id].PerSec = persec;
+	buildings[id].BPerSec=persec;
+	buildings[id].Cost=cost;
+	buildings[id].BCost=cost;
 	if(localStorage.getItem('IdleParts.GameSave') == null){
 	Game.BQty[id] = 0;
 	}
-	BCost[id]=cost;
-	BCostBase[id]=cost;
 }
-
-
-//--Updates visuals for numbers at launch--//
-function InitData(){
-	if(Game.Upgrades[0]==1){
-		document.getElementById("MultiGain").disabled=true;
-	}else{
-		document.getElementById("MultiGain").disabled=false};
-	if(Game.Upgrades[0]==1){
-		BCostMul=1.5}else{BCostMul=1};
-	for(id=0;id<buildings.length;id++){//Calculate cost of buildings
-	BCost[id]=round((BCost[id]*((1.3**Game.BQty[id]))*BCostMul),0);
-	}
-	document.getElementById("parts").innerHTML = Game.parts;
-	document.getElementById("Building1Qty").innerHTML = buildings[0].Name +": "+ Game.BQty[0];
-	document.getElementById("Building1Cost").innerHTML = "Cost: " + BCost[0];
-	document.getElementById("Building1PerSec").innerHTML = "Parts/sec " + buildings[0].PerSec;
-	document.getElementById("Building2Qty").innerHTML = buildings[1].Name +": "+ Game.BQty[1];
-	document.getElementById("Building2Cost").innerHTML = "Cost: " + BCost[1];
-	document.getElementById("Building2PerSec").innerHTML = "Parts/sec " + buildings[1].PerSec;
-	document.getElementById("money").innerHTML = Game.money;
-	UpdateTick();
-}
-
 
 //--Updates visuals for numbers at call--//
 function UpdateData(){
 	document.getElementById("parts").innerHTML = Game.parts;
 	document.getElementById("Building1Qty").innerHTML = buildings[0].Name +": "+ Game.BQty[0];
-	document.getElementById("Building1Cost").innerHTML = "Cost: " + BCost[0];
+	document.getElementById("Building1Cost").innerHTML = "Cost: " + buildings[0].Cost;
 	document.getElementById("Building1PerSec").innerHTML = "Parts/sec " + buildings[0].PerSec;
 	document.getElementById("Building2Qty").innerHTML = buildings[1].Name +": "+ Game.BQty[1];
-	document.getElementById("Building2Cost").innerHTML = "Cost: " + BCost[1];
+	document.getElementById("Building2Cost").innerHTML = "Cost: " + buildings[1].Cost;
 	document.getElementById("Building2PerSec").innerHTML = "Parts/sec " + buildings[1].PerSec;
 	document.getElementById("money").innerHTML = Game.money;
+	document.getElementById("C1Qty").innerHTML=Game.Items[0];
 }
 function UpdateParts(){
 	document.getElementById("parts").innerHTML = Game.parts;
 	document.getElementById("money").innerHTML = Game.money;
 }
 
-
+function UpdateUpgrades(){
+	if(Game.Upgrades[0]==1){
+		document.getElementById("CostCheap").disabled=true;
+		BCostMul=0.1;
+	}else{
+		document.getElementById("CostCheap").disabled=false;
+		BCostMul=1;
+	}
+	for(id=0;id<buildings.length;id++){//Calculate cost of buildings
+		buildings[id].Cost=round((buildings[id].BCost*BCostMul*(1.3**Game.BQty[id])),0);
+	}
+	
+	if(Game.Upgrades[1]==1){
+		document.getElementById("ProductionMulti").disabled=true;
+		ProdMulti=100;
+	}else{
+		document.getElementById("ProductionMulti").disabled=false;
+		ProdMulti=1;
+	}
+	for(id=0;id<buildings.length;id++){//Calculate production of parts
+		buildings[id].PerSec=buildings[id].BPerSec*ProdMulti;
+	}
+}
 
 //--Parents--//
 function GameData(){
@@ -91,11 +116,16 @@ function GameData(){
 	this.BQty=[]
 	this.Upgrades=[];
 	this.money=0;
+	this.Items=[];
 }
 function Building() {
 	this.Name = "Name";
 	this.Cost = 0;
 	this.PerSec = 0;
+}
+function Item(){
+	this.Name="Name";
+	this.Value=0;
 }
 
 
@@ -117,10 +147,10 @@ function BuyUpgrade(id){
 
 //--Build and Validity Check--//
 function Build(id){
-	if (Game.money >= BCost[id]){
-		Game.money -= BCost[id];
+	if (Game.money >= buildings[id].Cost){
+		Game.money -= buildings[id].Cost;
 		Game.BQty[id] = Game.BQty[id]+1;
-		BCost[id]=round((BCostBase[id]*((1.3**Game.BQty[id]))*BCostMul),0);
+		buildings[id].Cost=round((buildings[id].BCost*BCostMul*(1.3**Game.BQty[id])),0);
 		UpdateData();
 	}
 }
@@ -129,28 +159,10 @@ function Build(id){
 //--Reset--//
 function reset(){
 	if(window.confirm("This will wipe all of your savedata! Are you sure?")){
-		Game = new GameData();
-		ClearBuildings();
-		ClearProgressbars();
-		InitData();
-		GameSave();
-		console.log('Wiped save')
-		
+		localStorage.clear();
+		location.reload();
 	}
 }
-function ClearBuildings(){
-	for(id=0;id<buildings.length;id++){
-		Game.BQty[id] = 0;
-	}
-	buildings = []
-	InitBuildings();
-}
-function ClearProgressbars(){
-		partsprogress=0;
-		document.getElementById("partsBar").style.width=partsprogress+"%";
-		document.getElementById("partsprogressspan").innerHTML=partsprogress+"%";
-}
-
 
 
 //--disable and enable classes--//
@@ -163,7 +175,7 @@ document.getElementById(item).className = document.getElementById(item).classNam
 
 
 //--Save--//
-var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
+//var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
 function GameSave(){
 	window.localStorage['IdleParts.GameSave'] = JSON.stringify(Game);
 }
@@ -176,13 +188,17 @@ function ManualSave(){
 var Timerparts = window.setInterval(function(){partsTick()}, 1000);
 var TimerUpdate = window.setInterval(function(){UpdateTick()}, 1000);
 var Timermoney = window.setInterval(function(){moneyTick()},1000);
+
+
 function partsTick(){
 	for (var MT = 0;MT < buildings.length;MT++) {
-		Game.parts += Game.BQty[MT]* buildings[MT].PerSec;
+		Game.parts += Game.BQty[MT]*buildings[MT].PerSec;
 		Game.parts=round(Game.parts,1);//prevents "drift" of parts due to floating point. Alternative is Game.parts.toFixed(1) on following line
 		document.getElementById("parts").innerHTML = Game.parts;
 	}
 }
+
+
 function UpdateTick(){
 	for(var UT = 0;UT < buildings.length;UT++){
 		partspersec = round(partspersec+(Game.BQty[UT]*buildings[UT].PerSec),1);//multiplies all buildings by their quatites and then adds them all together
@@ -193,7 +209,6 @@ function UpdateTick(){
 function moneyTick(){
 	document.getElementById("money").innerHTML = Game.money;
 }
-
 
 //--Gather parts on click--//
 function Gatherparts(){
@@ -224,13 +239,13 @@ function sellparts(){
 		sellprogress=0;
 		var progresstimer2 = window.setInterval(function(){
 			sellprogress++;
-			document.getElementById("moneyBar").style.width=sellprogress+"%";
-			document.getElementById("moneyprogressspan").innerHTML=sellprogress+"%";
+			document.getElementById("money1Bar").style.width=sellprogress+"%";
+			document.getElementById("money1progressspan").innerHTML=sellprogress+"%";
 			if(sellprogress>=100){
 				Game.money+=rounddown(Game.parts,0);
 				Game.parts=0;
 				clearInterval(progresstimer2);
-				document.getElementById("moneyBar").style.width=sellprogress+"%";
+				document.getElementById("money1Bar").style.width=sellprogress+"%";
 				document.getElementById("money").innerHTML = Game.money;
 				document.getElementById("parts").innerHTML = Game.parts;
 				canmoney=0;
@@ -238,5 +253,52 @@ function sellparts(){
 		},50);
 	}
 };
+function sellC1(){
+	if(canmoney2==0){
+		canmoney2=1;
+		sell2progress=0;
+		var progresstimer4 = window.setInterval(function(){
+			sell2progress++;
+			document.getElementById("money2Bar").style.width=sell2progress+"%";
+			document.getElementById("money2progressspan").innerHTML=sell2progress+"%";
+			if(sell2progress>=100){
+				Game.money+=rounddown(Game.Items[0]*Items[0].Value,0);
+				Game.Items[0]=0;
+				clearInterval(progresstimer4);
+				document.getElementById("money2Bar").style.width=sell2progress+"%";
+				document.getElementById("money").innerHTML = Game.money;
+				document.getElementById("C1Qty").innerHTML=Game.Items[0];
+				canmoney2=0;
+			};
+		},50);
+	}
+};
+
+
+
+
+
+//--Crafting C1--//
+function CraftC1(){
+	if(canC1==0 && Game.parts>=50){
+		canC1=1;
+		Game.parts-=50;
+		document.getElementById("parts").innerHTML = Game.parts;
+		C1progress=0;
+		var progresstimer3 = window.setInterval(function(){
+			C1progress++;
+			document.getElementById("C1Bar").style.width=C1progress+"%";
+			document.getElementById("C1Progressspan").innerHTML=C1progress+"%";
+			if(C1progress>=100){
+				Game.Items[0]+=1
+				clearInterval(progresstimer3);
+				document.getElementById("C1Bar").style.width=C1progress+"%";
+				canC1=0;
+				document.getElementById("C1Qty").innerHTML=Game.Items[0];
+			};
+		},100);
+	}
+};
+
 
 

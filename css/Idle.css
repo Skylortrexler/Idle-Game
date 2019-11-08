@@ -14,24 +14,23 @@ background-image: url("../img/bg.png"); /* https://loading.io/pattern/m-lines */
 margin:0px;
 padding:0px;
 color:#d7a05b;
+font-family: 'Abel', sans-serif;
 }
 
 #game{
 	height:100%;
 	width:100%;
 	display:grid;
-	grid-template-columns:10% 20% 30% 30% 10%;
+	grid-template-columns:20% 20% 20% 20% 20%;
 	grid-template-rows:25% 25% 25% 25%;
 	grid-template-areas:
-	"click stats build upgra ....."
+	"craft sell- build ..... ....."
+	"stats ..... upgra ..... ....."
 	"..... ..... ..... ..... ....."
-	"..... ..... ..... ..... ....."
-	"optio ..... ..... ..... .....";
+	"..... ..... ..... ..... .....";
 	justify-items: stretch;
 }
-#clickable{
-	grid-area:click;
-}
+
 #stat-container{
 	grid-area:stats;
 }
@@ -41,10 +40,16 @@ color:#d7a05b;
 #upgrade-container{
 	grid-area:upgra;
 }
-#options{
-	grid-area:optio;
+#crafting-container{
+	grid-area:craft;
+}
+#Selling-container{
+	grid-area:sell-;
 }
 
+.stats{
+	width:45%;
+}
 .options{
 position:absolute;
 bottom:0;
@@ -85,6 +90,9 @@ bottom:0;
 	outline:none;
 	color:#d7a05b;
 	border: 2px solid #d7a05b;
+	font-family: 'Abel', sans-serif;
+	padding-left:10px;
+	padding-right:10px;
 }
 
 .button:hover {
@@ -100,13 +108,16 @@ bottom:0;
 	color:#896038;
 	border: 2px solid #896038;
 }
-/* crafting part bar */
+/* crafting bar */
 #partsprogress{
-	width:150px;
+	/* width:150px; */
+}
+#moneyprogress{
+
 }
 .progress {
-	height: 20px;
-	margin-bottom: 20px;
+	height: 30px;
+	margin-bottom: 10px;
 	overflow: hidden;
 	background-color: #816f53;
 	border-radius: 5px;
@@ -116,8 +127,8 @@ bottom:0;
 	float: left;
 	width: 0;
 	height: 100%;
-	font-size: 12px;
-	line-height: 20px;
+	font-size: 20px;
+	line-height: 30px;
 	color: #513e2e;
 	text-align: center;
 	background-color: #cdb590;
