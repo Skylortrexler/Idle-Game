@@ -24,8 +24,8 @@ font-family: 'Abel', sans-serif;
 	grid-template-columns:20% 20% 20% 20% 20%;
 	grid-template-rows:25% 25% 25% 25%;
 	grid-template-areas:
-	"craft sell- build ..... ....."
-	"stats ..... upgra ..... ....."
+	"craft sell- build upgra ....."
+	"stats ..... build ..... ....."
 	"..... ..... ..... ..... ....."
 	"..... ..... ..... ..... .....";
 	justify-items: stretch;

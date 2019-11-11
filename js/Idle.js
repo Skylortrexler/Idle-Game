@@ -53,7 +53,8 @@ function LoadItem(name,value){
 }
 
 function InitBuildings(){//name,cost,persec
-	LoadBuilding("Employee",10,0.2);
+	LoadBuilding("Cheap Employee",10,0.2);
+	LoadBuilding("Good Employee",100,0.5);
 	LoadBuilding("Robot",1000,1);
 }
 function LoadBuilding(name,cost,persec){
@@ -78,6 +79,9 @@ function UpdateData(){
 	document.getElementById("Building2Qty").innerHTML = buildings[1].Name +": "+ Game.BQty[1];
 	document.getElementById("Building2Cost").innerHTML = "Cost: " + buildings[1].Cost;
 	document.getElementById("Building2PerSec").innerHTML = "Parts/sec " + buildings[1].PerSec;
+	document.getElementById("Building3Qty").innerHTML = buildings[2].Name +": "+ Game.BQty[2];
+	document.getElementById("Building3Cost").innerHTML = "Cost: " + buildings[2].Cost;
+	document.getElementById("Building3PerSec").innerHTML = "Parts/sec " + buildings[2].PerSec;
 	document.getElementById("money").innerHTML = Game.money;
 	document.getElementById("C1Qty").innerHTML=Game.Items[0];
 }
@@ -107,6 +111,20 @@ function UpdateUpgrades(){
 	}
 	for(id=0;id<buildings.length;id++){//Calculate production of parts
 		buildings[id].PerSec=buildings[id].BPerSec*ProdMulti;
+	}
+	if(Game.Upgrades[2]==1){
+		if(Game.Items[0]>=1){
+				sellC1()
+			};
+		window.setInterval(function(){
+			if(Game.Items[0]>=1){
+				sellC1()
+			};
+		},1000);
+		document.getElementById("AutoSell").disabled=true;
+	}else{
+		document.getElementById("AutoSell").disabled=false;
+		BCostMul=1;
 	}
 }
 
@@ -213,7 +231,6 @@ function moneyTick(){
 //--Gather parts on click--//
 function Gatherparts(){
 	if(canparts==0){
-//		document.getElementById("moneybutton").disabled=true;
 		canparts=1;
 		partsprogress=0;
 		var progresstimer = window.setInterval(function(){
@@ -226,7 +243,6 @@ function Gatherparts(){
 				document.getElementById("partsBar").style.width=partsprogress+"%";
 				document.getElementById("parts").innerHTML = Game.parts;
 				canparts=0;
-//				document.getElementById("moneybutton").disabled=false;
 			};
 		}, 20);
 	};
