@@ -12,7 +12,15 @@ function InitData(){
 }
 
 //--Variables--//
-var partspersec = 0;
+var Game ={
+	parts: 0,
+	BQty:[],
+	Upgrades:[],
+	money:0,
+	Items:[],
+	Version:0.1,};
+	
+	partspersec = 0;
 	buildings = [];
 	BCostMul=1;
 	partsprogress=0;
@@ -31,11 +39,17 @@ var partspersec = 0;
 
 
 //--Loading Saves--//
-if(localStorage.getItem('IdleParts.GameSave') == null){
-	var Game = new GameData();
-} else {
-	var Game = JSON.parse(localStorage.getItem('IdleParts.GameSave'));
+var Game2 = JSON.parse(localStorage.getItem('IdleParts.GameSave'));
+if(	localStorage.getItem('IdleParts.GameSave') !== null){
+	if(Game2.Version>=Game.Version){
+		Game=Game2;
+	}
 }
+// if(localStorage.getItem('IdleParts.GameSave') == null){
+	// var Game = new GameData();
+// } else {
+	// var Game = JSON.parse(localStorage.getItem('IdleParts.GameSave'));
+// }
 
 
 //--Dynamically create objects--//
@@ -129,13 +143,6 @@ function UpdateUpgrades(){
 }
 
 //--Parents--//
-function GameData(){
-	this.parts = 0;
-	this.BQty=[]
-	this.Upgrades=[];
-	this.money=0;
-	this.Items=[];
-}
 function Building() {
 	this.Name = "Name";
 	this.Cost = 0;
