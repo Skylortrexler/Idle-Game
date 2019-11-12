@@ -2,8 +2,9 @@ window.onload = function(){
 	InitBuildings();
 	InitItems();
 	InitData();
+	OfflineProgress();
 	GameSave();
-}
+	}
 
 function InitData(){
 	UpdateUpgrades();
@@ -12,14 +13,7 @@ function InitData(){
 }
 
 //--Variables--//
-var Game ={
-	parts: 0,
-	BQty:[],
-	Upgrades:[],
-	money:0,
-	Items:[],
-	Version:0.1,};
-	
+var date = new Date();
 	partspersec = 0;
 	buildings = [];
 	BCostMul=1;
@@ -32,28 +26,41 @@ var Game ={
 	C1progress=0;
 	Items=[];
 	canmoney2=0;
-
+	offlineprogress=0;
+	partspersec2=0;
+	
+	Game ={
+	parts: 0,
+	BQty:[],
+	Upgrades:[],
+	money:0,
+	Items:[],
+	Version:0.1,
+	Time:date.getTime(),};
+	
 ////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////
-
 
 //--Loading Saves--//
 var Game2 = JSON.parse(localStorage.getItem('IdleParts.GameSave'));
-if(	localStorage.getItem('IdleParts.GameSave') !== null){
-	if(Game2.Version>=Game.Version){
-		Game=Game2;
-	}
+if(	localStorage.getItem('IdleParts.GameSave') !== null){//if there is a save
+	// if(Game2.Version>=Game.Version){
+		offlineprogress=(Game.Time-=Game2.Time);//difference in time from last save to page load in ms
+		Object.assign(Game,Game2);//copies loaded save overtop blank save ensuring all old saves get new save conent/features
+	// }
 }
-// if(localStorage.getItem('IdleParts.GameSave') == null){
-	// var Game = new GameData();
-// } else {
-	// var Game = JSON.parse(localStorage.getItem('IdleParts.GameSave'));
-// }
-
+function OfflineProgress(){
+	for(var UT = 0;UT < buildings.length;UT++){
+		partspersec2 =partspersec2+(Game.BQty[UT]*buildings[UT].PerSec);
+	};
+		Game.parts+=partspersec2*(offlineprogress/1000);//multiplies the partspersec on load by offlinetime in seconds
+		Game.parts=round(Game.parts,1);//rounds down to avoid floating
+		UpdateData();//updates ui after offline gains
+}	
 
 //--Dynamically create objects--//
-function InitItems(){
+function InitItems(){//name,value
 	LoadItem("C1",100);
 }
 function LoadItem(name,value){
@@ -202,6 +209,8 @@ document.getElementById(item).className = document.getElementById(item).classNam
 //--Save--//
 //var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
 function GameSave(){
+	var date = new Date();
+	Game.Time=date.getTime()
 	window.localStorage['IdleParts.GameSave'] = JSON.stringify(Game);
 }
 function ManualSave(){
