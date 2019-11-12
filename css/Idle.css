@@ -47,6 +47,18 @@ font-family: 'Abel', sans-serif;
 	grid-area:sell-;
 }
 
+#reset-container{
+	width:250px;
+	height:50px;
+	background:#513e2e;
+	border:2px solid #eabe7c;
+	border-radius:10px;
+	padding:5px;
+	position:absolute;
+	bottom:50px;
+	font-size:30px;
+	left:5px;
+	}
 
 #offlineprogress-container{
 	background-color: rgba(0,0,0,.6);

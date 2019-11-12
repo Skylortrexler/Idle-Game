@@ -32,7 +32,6 @@ var date = new Date();
 	Upgrades:[],
 	money:0,
 	Items:[],
-	Version:0.1,
 	Time:date.getTime(),};
 	
 ////////////////////////////////////////////////////////////////////////////
@@ -53,6 +52,7 @@ function OfflineOnLoad(){
 	},5);
 }
 function CloseOfflineWindow(){
+	disableitem("offlinebutton")
 	let x=100;
 	let T=window.setInterval(function(){
 		x--;
@@ -248,18 +248,23 @@ function Build(id){
 
 //--Reset--//
 function reset(){
-	if(window.confirm("This will wipe all of your savedata! Are you sure?")){
 		localStorage.clear();
 		location.reload();
-	}
 }
+function resetconfirm(){
+	unlockitem("reset-container")
+}
+function resetno(){
+	lockitem("reset-container")
+}
+	
 
 //--lock and unlock classes--//
 function lockitem(item){
-document.getElementById(item).className = document.getElementById(item).className + " locked";
+document.getElementById(item).className = document.getElementById(item).className + "locked";
 }
 function unlockitem(item){
-document.getElementById(item).className = document.getElementById(item).className.replace(" locked","");
+document.getElementById(item).className = document.getElementById(item).className.replace("locked","");
 }
 
 //--disable and enable classes--//

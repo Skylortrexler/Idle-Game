@@ -102,8 +102,15 @@
 					<input id=offlinebutton type=button class=button value=Okay onclick=CloseOfflineWindow();>
 				</div>
 			</div>
+			
+			<div id=reset-container class=locked>
+				Are you sure?
+				<input type=button class=button value=Yes onclick=reset();>
+				<input type=button class=button value=No onclick=resetno();>
+			</div>
+				
 			<div id=options class="block options">
-				<input type=button class="button bottom" value=reset onclick=reset();>
+				<input type=button class="button bottom" value=reset onclick=resetconfirm();>
 				<input type=button class="button bottom" value=save onclick=ManualSave();>
 			</div>
 			
