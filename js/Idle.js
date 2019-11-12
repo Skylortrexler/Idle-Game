@@ -2,8 +2,8 @@ window.onload = function(){
 	InitBuildings();
 	InitItems();
 	InitData();
-	OfflineProgress();
 	GameSave();
+	OfflineOnLoad();
 	}
 
 function InitData(){
@@ -17,20 +17,17 @@ var date = new Date();
 	partspersec = 0;
 	buildings = [];
 	BCostMul=1;
-	partsprogress=0;
-	canparts=0;
-	sellprogress=0;
-	canmoney=0;
 	ProdMulti=1;
-	canC1=0;
-	C1progress=0;
 	Items=[];
-	canmoney2=0;
 	offlineprogress=0;
-	partspersec2=0;
+	PPS=0;
+	canparts=0;//all of the Cans  
+	canmoney=0;//are required to
+	canmoney=0;//prevent the bars
+	canC1=0;//from being spammed
 	
-	Game ={
-	parts: 0,
+	Game={
+	parts:0,
 	BQty:[],
 	Upgrades:[],
 	money:0,
@@ -39,7 +36,77 @@ var date = new Date();
 	Time:date.getTime(),};
 	
 ////////////////////////////////////////////////////////////////////////////
+function OfflineOnLoad(){
+	for(var A=0;A<buildings.length;A++){
+		PPS=PPS+=(Game.BQty[A]*buildings[A].PerSec);
+	};
+	PPS=round(PPS*(offlineprogress/1000),1);//converts offlineprogress into seconds, rounds to nearest whole second, multiplies by parts per second
+	let x = 0;
+	let T=window.setInterval(function(){
+		x++;
+		document.getElementById("offlineprogress").style.opacity=x+"%";//fade in
+		document.getElementById("offlineprogress-container").style.opacity=x+"%";//fade in
+		if(x>=100){
+			clearInterval(T);
+			OfflineOnLoad2();//waits to calculate until faded in
+		}
+	},5);
+}
+function CloseOfflineWindow(){
+	let x=100;
+	let T=window.setInterval(function(){
+		x--;
+		document.getElementById("offlineprogress").style.opacity=x+"%";//fade out
+		document.getElementById("offlineprogress-container").style.opacity=x+"%";//fade in
+		if(x<=0){
+			clearInterval(T);
+			lockitem("offlineprogress");
+			lockitem("offlineprogress-container");
+		}
+	},5);
+	Game.parts+=PPS;
+	Game.parts=rounddown(Game.parts,1);//rounds down to avoid floating
+	UpdateData();//updates ui after offline gains
+}
 
+function OfflineOnLoad2(){
+	let x=0;
+	let T=window.setInterval(function(){
+		if(x<PPS-1000000){
+			x+=100000;
+			document.getElementById("offlinepartsnumb").innerHTML=x;
+		};
+		if(x<PPS-100000){
+			x+=10000;
+			document.getElementById("offlinepartsnumb").innerHTML=x;
+		};
+		if(x<PPS-10000){
+			x+=1000;
+			document.getElementById("offlinepartsnumb").innerHTML=x;
+		};
+		if(x<PPS-1000){
+			x+=100;
+			document.getElementById("offlinepartsnumb").innerHTML=x;
+		};
+		if(x<PPS-100){
+			x+=10;
+			document.getElementById("offlinepartsnumb").innerHTML=x;
+		};
+		if(x<PPS-2){
+			x++;
+			document.getElementById("offlinepartsnumb").innerHTML=x;
+		};
+		if(x<PPS-0.1){
+			x+=0.1;
+			document.getElementById("offlinepartsnumb").innerHTML=x.toFixed(1);
+		};
+		if(x==PPS.toFixed(1)){
+			x=rounddown(PPS,1);
+			document.getElementById("offlinepartsnumb").innerHTML=x;
+			clearInterval(T);
+		};
+	},1);
+}
 ////////////////////////////////////////////////////////////////////////////
 
 //--Loading Saves--//
@@ -50,21 +117,13 @@ if(	localStorage.getItem('IdleParts.GameSave') !== null){//if there is a save
 		Object.assign(Game,Game2);//copies loaded save overtop blank save ensuring all old saves get new save conent/features
 	// }
 }
-function OfflineProgress(){
-	for(var UT = 0;UT < buildings.length;UT++){
-		partspersec2 =partspersec2+(Game.BQty[UT]*buildings[UT].PerSec);
-	};
-		Game.parts+=partspersec2*(offlineprogress/1000);//multiplies the partspersec on load by offlinetime in seconds
-		Game.parts=round(Game.parts,1);//rounds down to avoid floating
-		UpdateData();//updates ui after offline gains
-}	
 
 //--Dynamically create objects--//
 function InitItems(){//name,value
 	LoadItem("C1",100);
 }
 function LoadItem(name,value){
-	var id = Items.length;
+	let id = Items.length;
 	Items[id]=new Item();
 	Items[id].Name=name;
 	Items[id].Value=value;
@@ -79,7 +138,7 @@ function InitBuildings(){//name,cost,persec
 	LoadBuilding("Robot",1000,1);
 }
 function LoadBuilding(name,cost,persec){
-	var id = buildings.length;
+	let id = buildings.length;
 	buildings[id] = new Building();
 	buildings[id].Name = name;
 	buildings[id].PerSec = persec;
@@ -113,10 +172,10 @@ function UpdateParts(){
 
 function UpdateUpgrades(){
 	if(Game.Upgrades[0]==1){
-		document.getElementById("CostCheap").disabled=true;
+		disableitem("CostCheap");
 		BCostMul=0.1;
 	}else{
-		document.getElementById("CostCheap").disabled=false;
+		enableitem("CostCheap");
 		BCostMul=1;
 	}
 	for(id=0;id<buildings.length;id++){//Calculate cost of buildings
@@ -124,10 +183,10 @@ function UpdateUpgrades(){
 	}
 	
 	if(Game.Upgrades[1]==1){
-		document.getElementById("ProductionMulti").disabled=true;
+		disableitem("ProductionMulti");
 		ProdMulti=100;
 	}else{
-		document.getElementById("ProductionMulti").disabled=false;
+		enableitem("ProductionMulti");
 		ProdMulti=1;
 	}
 	for(id=0;id<buildings.length;id++){//Calculate production of parts
@@ -142,9 +201,9 @@ function UpdateUpgrades(){
 				sellC1()
 			};
 		},1000);
-		document.getElementById("AutoSell").disabled=true;
+		disableitem("AutoSell");
 	}else{
-		document.getElementById("AutoSell").disabled=false;
+		enableitem("AutoSell");
 		BCostMul=1;
 	}
 }
@@ -163,12 +222,11 @@ function Item(){
 
 //--Rounding--//
 function round(value, decimals) {
-  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+	return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
 function rounddown(value, decimals) {
-  return Number(Math.floor(value+'e'+decimals)+'e-'+decimals);
+	return Number(Math.floor(value+'e'+decimals)+'e-'+decimals);
 }
-
 
 //--Upgrades--//
 function BuyUpgrade(id){
@@ -196,18 +254,25 @@ function reset(){
 	}
 }
 
+//--lock and unlock classes--//
+function lockitem(item){
+document.getElementById(item).className = document.getElementById(item).className + " locked";
+}
+function unlockitem(item){
+document.getElementById(item).className = document.getElementById(item).className.replace(" locked","");
+}
 
 //--disable and enable classes--//
 function disableitem(item){
-document.getElementById(item).className = document.getElementById(item).className + " locked";
+document.getElementById(item).disabled=true;
 }
 function enableitem(item){
-document.getElementById(item).className = document.getElementById(item).className.replace(" locked","");
+document.getElementById(item).dsiabled=false;
 }
 
 
 //--Save--//
-//var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
+var SaveTimer = window.setInterval(function(){GameSave()}, 1000);
 function GameSave(){
 	var date = new Date();
 	Game.Time=date.getTime()
@@ -248,8 +313,8 @@ function moneyTick(){
 function Gatherparts(){
 	if(canparts==0){
 		canparts=1;
-		partsprogress=0;
-		var progresstimer = window.setInterval(function(){
+		let partsprogress=0;
+		let progresstimer = window.setInterval(function(){
 			partsprogress++
 			document.getElementById("partsBar").style.width=partsprogress+"%";
 			document.getElementById("partsprogressspan").innerHTML=partsprogress+"%";
@@ -268,15 +333,15 @@ function Gatherparts(){
 function sellparts(){
 	if(canmoney==0){
 		canmoney=1;
-		sellprogress=0;
-		var progresstimer2 = window.setInterval(function(){
+		let sellprogress=0;
+		let progresstimer = window.setInterval(function(){
 			sellprogress++;
 			document.getElementById("money1Bar").style.width=sellprogress+"%";
 			document.getElementById("money1progressspan").innerHTML=sellprogress+"%";
 			if(sellprogress>=100){
 				Game.money+=rounddown(Game.parts,0);
 				Game.parts=0;
-				clearInterval(progresstimer2);
+				clearInterval(progresstimer);
 				document.getElementById("money1Bar").style.width=sellprogress+"%";
 				document.getElementById("money").innerHTML = Game.money;
 				document.getElementById("parts").innerHTML = Game.parts;
@@ -286,21 +351,21 @@ function sellparts(){
 	}
 };
 function sellC1(){
-	if(canmoney2==0){
-		canmoney2=1;
-		sell2progress=0;
-		var progresstimer4 = window.setInterval(function(){
-			sell2progress++;
-			document.getElementById("money2Bar").style.width=sell2progress+"%";
-			document.getElementById("money2progressspan").innerHTML=sell2progress+"%";
-			if(sell2progress>=100){
+	if(canmoney==0){
+		canmoney=1;
+		let sellprogress=0;
+		let progresstimer = window.setInterval(function(){
+			sellprogress++;
+			document.getElementById("money2Bar").style.width=sellprogress+"%";
+			document.getElementById("money2progressspan").innerHTML=sellprogress+"%";
+			if(sellprogress>=100){
 				Game.money+=rounddown(Game.Items[0]*Items[0].Value,0);
 				Game.Items[0]=0;
-				clearInterval(progresstimer4);
-				document.getElementById("money2Bar").style.width=sell2progress+"%";
+				clearInterval(progresstimer);
+				document.getElementById("money2Bar").style.width=sellprogress+"%";
 				document.getElementById("money").innerHTML = Game.money;
 				document.getElementById("C1Qty").innerHTML=Game.Items[0];
-				canmoney2=0;
+				canmoney=0;
 			};
 		},50);
 	}
@@ -316,14 +381,14 @@ function CraftC1(){
 		canC1=1;
 		Game.parts-=50;
 		document.getElementById("parts").innerHTML = Game.parts;
-		C1progress=0;
-		var progresstimer3 = window.setInterval(function(){
+		let C1progress=0;
+		let progresstimer = window.setInterval(function(){
 			C1progress++;
 			document.getElementById("C1Bar").style.width=C1progress+"%";
 			document.getElementById("C1Progressspan").innerHTML=C1progress+"%";
 			if(C1progress>=100){
 				Game.Items[0]+=1
-				clearInterval(progresstimer3);
+				clearInterval(progresstimer);
 				document.getElementById("C1Bar").style.width=C1progress+"%";
 				canC1=0;
 				document.getElementById("C1Qty").innerHTML=Game.Items[0];
@@ -331,6 +396,3 @@ function CraftC1(){
 		},100);
 	}
 };
-
-
-

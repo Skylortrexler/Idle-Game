@@ -94,7 +94,14 @@
 					<input id=AutoSell type=button class="upgrade button" value=AutoSellC1 onclick=BuyUpgrade(2);>
 				</div>
 			</div>
-			
+			<div id=offlineprogress-container>
+				<div id=offlineprogress>
+					<div id=OfflineTitle class="label3 offline">While offline you made:</div>
+					<div id=offlinepartsnumb class="label4 offline">0.0</div>
+					<div id=offlineparts class="label3 offline">Parts</div>
+					<input id=offlinebutton type=button class=button value=Okay onclick=CloseOfflineWindow();>
+				</div>
+			</div>
 			<div id=options class="block options">
 				<input type=button class="button bottom" value=reset onclick=reset();>
 				<input type=button class="button bottom" value=save onclick=ManualSave();>
