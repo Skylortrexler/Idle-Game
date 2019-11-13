@@ -32,9 +32,23 @@ var date = new Date();
 	Upgrades:[],
 	money:0,
 	Items:[],
-	Time:date.getTime(),};
+	Time:date.getTime(),
+	Oneoff:[],};
 	
 ////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////
+
+//--Loading Saves--//
+var Game2 = JSON.parse(localStorage.getItem('IdleParts.GameSave'));
+if(	localStorage.getItem('IdleParts.GameSave') !== null){//if there is a save
+	// if(Game2.Version>=Game.Version){
+		offlineprogress=(Game.Time-=Game2.Time);//difference in time from last save to page load in ms
+		Object.assign(Game,Game2);//copies loaded save overtop blank save ensuring all old saves get new save conent/features
+	// }
+}
+
+//--offline progression--//
 function OfflineOnLoad(){
 	for(var A=0;A<buildings.length;A++){
 		PPS=PPS+=(Game.BQty[A]*buildings[A].PerSec);
@@ -66,6 +80,7 @@ function CloseOfflineWindow(){
 	},5);
 	Game.parts+=PPS;
 	Game.parts=rounddown(Game.parts,1);//rounds down to avoid floating
+	GameSave();
 	UpdateData();//updates ui after offline gains
 }
 
@@ -106,16 +121,6 @@ function OfflineOnLoad2(){
 			clearInterval(T);
 		};
 	},1);
-}
-////////////////////////////////////////////////////////////////////////////
-
-//--Loading Saves--//
-var Game2 = JSON.parse(localStorage.getItem('IdleParts.GameSave'));
-if(	localStorage.getItem('IdleParts.GameSave') !== null){//if there is a save
-	// if(Game2.Version>=Game.Version){
-		offlineprogress=(Game.Time-=Game2.Time);//difference in time from last save to page load in ms
-		Object.assign(Game,Game2);//copies loaded save overtop blank save ensuring all old saves get new save conent/features
-	// }
 }
 
 //--Dynamically create objects--//
