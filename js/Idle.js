@@ -122,38 +122,34 @@ function closeOfflineWindow(){
 function offlineOnLoad2(){
 	let x=0;
 	let T=window.setInterval(function(){
-		if(x<PPS-1000000){
+		switch(true){
+		case x<PPS-1000000:
 			x+=100000;
-			document.getElementById("offlinePartsNumb").innerHTML=x;
-		};
-		if(x<PPS-100000){
+			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS-100000:
 			x+=10000;
-			document.getElementById("offlinePartsNumb").innerHTML=x;
-		};
-		if(x<PPS-10000){
+			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS-10000:
 			x+=1000;
-			document.getElementById("offlinePartsNumb").innerHTML=x;
-		};
-		if(x<PPS-1000){
+			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS-1000:
 			x+=100;
-			document.getElementById("offlinePartsNumb").innerHTML=x;
-		};
-		if(x<PPS-100){
+			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS-100:
 			x+=10;
-			document.getElementById("offlinePartsNumb").innerHTML=x;
-		};
-		if(x<PPS-2){
+			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS-2:
 			x++;
-			document.getElementById("offlinePartsNumb").innerHTML=x;
-		};
-		if(x<PPS-0.1){
+			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS-0.1:
 			x+=0.1;
 			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
-		};
-		if(x==PPS.toFixed(1)){
+		break;
+		case x==PPS.toFixed(1):
 			x=rounddown(PPS,1);
 			document.getElementById("offlinePartsNumb").innerHTML=x;
 			clearInterval(T);
+		break;
 		};
 	},1);
 }
@@ -213,7 +209,7 @@ function updateParts(){
 function updateUpgrades(){
 	if(game.upgrades[0]==1){
 		disableItem("costCheap");
-		bCostMul=0.1;
+		bCostMul=0.001;
 		for(id=0;id<buildings.length;id++){//Calculate cost of buildings
 			buildings[id].cost=round((buildings[id].bCost*bCostMul*(1.3**game.bQty[id])),0);
 		}
@@ -326,7 +322,7 @@ document.getElementById(item).disabled=false;
 
 
 //--Save--//
-var SaveTimer = window.setInterval(function(){gameSave()}, 1000);
+//var SaveTimer = window.setInterval(function(){gameSave()}, 1000);
 function gameSave(){
 	var date = new Date();
 	game.time=date.getTime()
