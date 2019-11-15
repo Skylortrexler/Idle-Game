@@ -126,21 +126,27 @@ function offlineOnLoad2(){
 		case x<PPS-1000000:
 			x+=100000;
 			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		break;
 		case x<PPS-100000:
 			x+=10000;
 			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		break;
 		case x<PPS-10000:
 			x+=1000;
 			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		break;
 		case x<PPS-1000:
 			x+=100;
 			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		break;
 		case x<PPS-100:
 			x+=10;
 			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		break;
 		case x<PPS-2:
 			x++;
 			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		break;
 		case x<PPS-0.1:
 			x+=0.1;
 			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
