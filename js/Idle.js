@@ -36,9 +36,21 @@ var date = new Date();
 	time:date.getTime(),
 	oneOff:[0],};
 	
+	
+	//--Loading Saves--//
+var game2 = JSON.parse(localStorage.getItem('idleParts.gameSave'));
+if(	localStorage.getItem('idleParts.gameSave') !== null){//if there is a save
+		offlineProgress=(game.time-=game2.time);//difference in time from last save to page load in ms
+		Object.assign(game,game2);//copies loaded save overtop blank save ensuring all old saves get new save conent/features
+		
+}
+////////////////////////////////////////////////////////////////////////////
+if(	localStorage.getItem('idleParts.gameSave') !== null){
+	//on laod unhide test goes here
+}
 ////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////
+
 
 //--First Launch--//
 function firstLaunch(){
@@ -69,14 +81,7 @@ function closeFLWindow(){
 	},5);
 }
 
-//--Loading Saves--//
-var Game2 = JSON.parse(localStorage.getItem('idleParts.gameSave'));
-if(	localStorage.getItem('idleParts.gameSave') !== null){//if there is a save
-	// if(Game2.Version>=game.Version){
-		offlineProgress=(game.time-=Game2.time);//difference in time from last save to page load in ms
-		Object.assign(game,Game2);//copies loaded save overtop blank save ensuring all old saves get new save conent/features
-	// }
-}
+
 
 //--offline progression--//
 function offlineOnLoad(){
@@ -92,7 +97,7 @@ function offlineOnLoad(){
 		document.getElementById("offlineProgressContainer").style.opacity=x+"%";//fade in
 		if(x>=100){
 				clearInterval(T);
-				OfflineOnLoad2();//waits to calculate until faded in
+				offlineOnLoad2();//waits to calculate until faded in
 			}
 		},5);
 	}
@@ -114,7 +119,7 @@ function closeOfflineWindow(){
 	updateData();//updates ui after offline gains
 }
 
-function OfflineOnLoad2(){
+function offlineOnLoad2(){
 	let x=0;
 	let T=window.setInterval(function(){
 		if(x<PPS-1000000){
@@ -155,9 +160,9 @@ function OfflineOnLoad2(){
 
 //--Dynamically create objects--//
 function initItems(){//name,value
-	LoadItem("C1",100);
+	loadItem("C1",100);
 }
-function LoadItem(name,value){
+function loadItem(name,value){
 	let id = items.length;
 	items[id]=new Item();
 	items[id].name=name;
@@ -177,7 +182,7 @@ function loadBuilding(name,cost,persec){
 	buildings[id] = new building();
 	buildings[id].name = name;
 	buildings[id].perSec = persec;
-	buildings[id].BPerSec=persec;
+	buildings[id].bPerSec=persec;
 	buildings[id].cost=cost;
 	buildings[id].bCost=cost;
 	if(localStorage.getItem('idleParts.gameSave') == null){
@@ -223,13 +228,13 @@ function updateUpgrades(){
 		disableItem("productionMulti");
 		prodMulti=100;
 		for(id=0;id<buildings.length;id++){//Calculate production of parts
-			buildings[id].perSec=buildings[id].BPerSec*prodMulti;
+			buildings[id].perSec=buildings[id].bPerSec*prodMulti;
 		}
 	}else{
 		enableItem("productionMulti");
 		prodMulti=1;
 		for(id=0;id<buildings.length;id++){//Calculate production of parts
-			buildings[id].perSec=buildings[id].BPerSec*prodMulti;
+			buildings[id].perSec=buildings[id].bPerSec*prodMulti;
 		}
 	}
 	if(game.upgrades[2]==1){
