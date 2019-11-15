@@ -31,23 +31,62 @@ font-family: 'Abel', sans-serif;
 	justify-items: stretch;
 }
 
-#stat-container{
+#statContainer{
 	grid-area:stats;
 }
-#building-container{
+#buildingContainer{
 	grid-area:build;
 }
-#upgrade-container{
+#upgradeContainer{
 	grid-area:upgra;
 }
-#crafting-container{
+#craftingContainer{
 	grid-area:craft;
 }
-#Selling-container{
+#sellingContainer{
 	grid-area:sell-;
 }
 
-#reset-container{
+
+.FL{
+	margin-top:5px;
+	text-align:center;
+}
+
+#popupContainer{
+	position:absolute;
+	width:100%;
+	height:100%;
+	pointer-events: none;
+}
+
+#firstLaunchContainer{
+	background-color: rgba(0,0,0,.6);
+	position:absolute;
+	width:100%;
+	height:100%;
+	opacity:0%;
+	z-index:1;
+	pointer-events: auto
+}
+#firstLaunch{
+	background:#513e2e;
+	position:absolute;
+	left:35%;
+	top:30%;
+	width:30%;
+	height:30%;
+	border-radius:10px;
+	border:2px solid #eabe7c;
+
+}
+#FLButton{
+	position:absolute;
+	left:45%;
+	bottom:3%;	
+}
+
+#resetContainer{
 	width:250px;
 	height:50px;
 	background:#513e2e;
@@ -60,15 +99,16 @@ font-family: 'Abel', sans-serif;
 	left:5px;
 	}
 
-#offlineprogress-container{
+#offlineProgressContainer{
 	background-color: rgba(0,0,0,.6);
 	position:absolute;
 	width:100%;
 	height:100%;
 	opacity:0%;
 	z-index:1;
+	pointer-events: auto
 }
-#offlineprogress{
+#offlineProgress{
 	background:#513e2e;
 	position:absolute;
 	left:35%;
@@ -77,9 +117,8 @@ font-family: 'Abel', sans-serif;
 	height:30%;
 	border-radius:10px;
 	border:2px solid #eabe7c;
-	opacity:0%;
 }
-#offlinebutton{
+#offlineButton{
 	position:absolute;
 	left:45%;
 	bottom:3%;	
@@ -96,8 +135,11 @@ font-family: 'Abel', sans-serif;
 position:absolute;
 bottom:0;
 }
-#Upgrades{
+#upgrades{
 	display:inline-block;
+}
+.upgrade{
+	margin-top:5px;
 }
 .buildings{
 	display:inline-block; 
@@ -159,10 +201,10 @@ bottom:0;
 	padding-right:10px;
 }
 /* crafting bar */
-#partsprogress{
+#partsProgress{
 	/* width:150px; */
 }
-#moneyprogress{
+#moneyProgress{
 
 }
 .progress {
@@ -173,7 +215,7 @@ bottom:0;
 	border-radius: 5px;
 	border: 2px solid #d7a05b;
 }
-.progress-bar { 
+.progressBar { 
 	float: left;
 	width: 0;
 	height: 100%;
