@@ -46,7 +46,16 @@ if(	localStorage.getItem('idleParts.gameSave') !== null){//if there is a save
 }
 ////////////////////////////////////////////////////////////////////////////
 if(	localStorage.getItem('idleParts.gameSave') !== null){
-	//on laod unhide test goes here
+	//on load unhide test goes here
+}
+
+
+function getDigitCount(number) {
+  return Math.max(Math.floor(Math.log10(Math.abs(number))), 0) + 1;
+}
+function getDigit(number, n, fromLeft) {
+	const location = fromLeft ? getDigitCount(number) + 1 - n : n;
+	return Math.floor((number / Math.pow(10, location - 1)) % 10);
 }
 ////////////////////////////////////////////////////////////////////////////
 
@@ -90,7 +99,7 @@ function offlineOnLoad(){
 		for(var A=0;A<buildings.length;A++){
 			PPS=PPS+=(game.bQty[A]*buildings[A].perSec);
 		};
-		PPS=round(PPS*(offlineProgress/1000),1);//converts offlineProgress into seconds, rounds to nearest whole second, multiplies by parts per second
+		PPS=PPS*(offlineProgress/1000);//converts offlineProgress into seconds, rounds to nearest whole second, multiplies by parts per second and adds a decimal if one doesn't exist
 		let x = 0;
 		let T=window.setInterval(function(){
 		x++;
@@ -123,43 +132,38 @@ function offlineOnLoad2(){
 	let x=0;
 	let T=window.setInterval(function(){
 		switch(true){
-		case x<PPS-1000000:
-			x+=100000;
-			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS/100000:
+			x+=PPS/1000000;
+			document.getElementById("offlinePartsNumb").innerHTML=x.toLocaleString();
 		break;
-		case x<PPS-100000:
-			x+=10000;
-			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS/10000:
+			x+=PPS/100000;
+			document.getElementById("offlinePartsNumb").innerHTML=x.toLocaleString();
 		break;
-		case x<PPS-10000:
-			x+=1000;
-			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS/1000:
+			x+=PPS/10000;
+			document.getElementById("offlinePartsNumb").innerHTML=x.toLocaleString();
 		break;
-		case x<PPS-1000:
-			x+=100;
-			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS/100:
+			x+=PPS/1000;
+			document.getElementById("offlinePartsNumb").innerHTML=x.toLocaleString();
 		break;
-		case x<PPS-100:
-			x+=10;
-			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS/10:
+			x+=PPS/100;
+			document.getElementById("offlinePartsNumb").innerHTML=x.toLocaleString();
 		break;
-		case x<PPS-2:
-			x++;
-			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
+		case x<PPS:
+			x+=PPS/100
+			document.getElementById("offlinePartsNumb").innerHTML=x.toLocaleString();
 		break;
-		case x<PPS-0.1:
-			x+=0.1;
-			document.getElementById("offlinePartsNumb").innerHTML=x.toFixed(1);
-		break;
-		case x==PPS.toFixed(1):
+		case x>=PPS:
 			x=rounddown(PPS,1);
-			document.getElementById("offlinePartsNumb").innerHTML=x;
+			document.getElementById("offlinePartsNumb").innerHTML=x.toLocaleString();
 			clearInterval(T);
 		break;
 		};
-	},1);
+	},10);
 }
-
 //--Dynamically create objects--//
 function initItems(){//name,value
 	loadItem("C1",100);
@@ -194,22 +198,22 @@ function loadBuilding(name,cost,persec){
 
 //--Updates visuals for numbers at call--//
 function updateData(){
-	document.getElementById("parts").innerHTML = game.parts;
+	document.getElementById("parts").innerHTML = game.parts.toLocaleString();
 	document.getElementById("building1Qty").innerHTML = buildings[0].name +": "+ game.bQty[0];
-	document.getElementById("building1Cost").innerHTML = "cost: " + buildings[0].cost;
+	document.getElementById("building1Cost").innerHTML = "cost: " + buildings[0].cost.toLocaleString();
 	document.getElementById("building1PerSec").innerHTML = "Parts/sec " + buildings[0].perSec;
 	document.getElementById("building2Qty").innerHTML = buildings[1].name +": "+ game.bQty[1];
-	document.getElementById("building2Cost").innerHTML = "cost: " + buildings[1].cost;
+	document.getElementById("building2Cost").innerHTML = "cost: " + buildings[1].cost.toLocaleString();
 	document.getElementById("building2PerSec").innerHTML = "Parts/sec " + buildings[1].perSec;
 	document.getElementById("building3Qty").innerHTML = buildings[2].name +": "+ game.bQty[2];
-	document.getElementById("building3Cost").innerHTML = "cost: " + buildings[2].cost;
+	document.getElementById("building3Cost").innerHTML = "cost: " + buildings[2].cost.toLocaleString();
 	document.getElementById("building3PerSec").innerHTML = "Parts/sec " + buildings[2].perSec;
-	document.getElementById("money").innerHTML = game.money;
+	document.getElementById("money").innerHTML = game.money.toLocaleString();
 	document.getElementById("c1Qty").innerHTML=game.items[0];
 }
 function updateParts(){
-	document.getElementById("parts").innerHTML = game.parts;
-	document.getElementById("money").innerHTML = game.money;
+	document.getElementById("parts").innerHTML = game.parts.toLocaleString();
+	document.getElementById("money").innerHTML = game.money.toLocaleString();
 }
 
 function updateUpgrades(){
@@ -349,7 +353,7 @@ function partsTick(){
 	for (var MT = 0;MT < buildings.length;MT++) {
 		game.parts += game.bQty[MT]*buildings[MT].perSec;
 		game.parts=round(game.parts,1);//prevents "drift" of parts due to floating point. Alternative is game.parts.toFixed(1) on following line
-		document.getElementById("parts").innerHTML = game.parts;
+		document.getElementById("parts").innerHTML = game.parts.toLocaleString();
 	}
 }
 
@@ -358,11 +362,11 @@ function updateTick(){
 	for(var UT = 0;UT < buildings.length;UT++){
 		partsPerSec = round(partsPerSec+(game.bQty[UT]*buildings[UT].perSec),1);//multiplies all buildings by their quatites and then adds them all together
 	}
-	document.getElementById("partsPerSec").innerHTML = partsPerSec;
+	document.getElementById("partsPerSec").innerHTML = partsPerSec.toLocaleString();
 	partsPerSec = 0;//reset to zero is required or it will loop on itself
 }
 function moneyTick(){
-	document.getElementById("money").innerHTML = game.money;
+	document.getElementById("money").innerHTML = game.money.toLocaleString();
 }
 
 //--Gather parts on click--//
@@ -378,7 +382,7 @@ function gatherParts(){
 				game.parts++;
 				clearInterval(progresstimer);
 				document.getElementById("partsBar").style.width=partsProgress+"%";
-				document.getElementById("parts").innerHTML = game.parts;
+				document.getElementById("parts").innerHTML = game.parts.toLocaleString();
 				canParts=0;
 			};
 		}, 20);
@@ -399,8 +403,8 @@ function sellParts(){
 				game.parts=0;
 				clearInterval(progresstimer);
 				document.getElementById("money1Bar").style.width=sellprogress+"%";
-				document.getElementById("money").innerHTML = game.money;
-				document.getElementById("parts").innerHTML = game.parts;
+				document.getElementById("money").innerHTML = game.money.toLocaleString();
+				document.getElementById("parts").innerHTML = game.parts.toLocaleString();
 				canMoney=0;
 			};
 		},50);
@@ -419,7 +423,7 @@ function sellC1(){
 				game.items[0]=0;
 				clearInterval(progresstimer);
 				document.getElementById("money2Bar").style.width=sellprogress+"%";
-				document.getElementById("money").innerHTML = game.money;
+				document.getElementById("money").innerHTML = game.money.toLocaleString();
 				document.getElementById("c1Qty").innerHTML=game.items[0];
 				canMoney=0;
 			};
@@ -436,7 +440,7 @@ function craftC1(){
 	if(canC1==0 && game.parts>=50){
 		canC1=1;
 		game.parts-=50;
-		document.getElementById("parts").innerHTML = game.parts;
+		document.getElementById("parts").innerHTML = game.parts.toLocaleString();
 		let C1progress=0;
 		let progresstimer = window.setInterval(function(){
 			C1progress++;
