@@ -26,6 +26,7 @@ var date = new Date();
 	canMoney=0;//are required to
 	canMoney2=0;//prevent the bars
 	canC1=0;//from being spammed
+
 	
 	game={
 	parts:0,
@@ -34,7 +35,8 @@ var date = new Date();
 	money:0,
 	items:[],
 	time:date.getTime(),
-	oneOff:[0],};
+	firstLaunchOneOff:0,
+	};
 	
 	
 	//--Loading Saves--//
@@ -45,25 +47,14 @@ if(	localStorage.getItem('idleParts.gameSave') !== null){//if there is a save
 		
 }
 ////////////////////////////////////////////////////////////////////////////
-if(	localStorage.getItem('idleParts.gameSave') !== null){
-	//on load unhide test goes here
-}
 
-
-function getDigitCount(number) {
-  return Math.max(Math.floor(Math.log10(Math.abs(number))), 0) + 1;
-}
-function getDigit(number, n, fromLeft) {
-	const location = fromLeft ? getDigitCount(number) + 1 - n : n;
-	return Math.floor((number / Math.pow(10, location - 1)) % 10);
-}
 ////////////////////////////////////////////////////////////////////////////
 
 
 
 //--First Launch--//
 function firstLaunch(){
-	if(game.oneOff[0]==0){//Only displays this message on new game
+	if(game.firstLaunchOneOff==0){//Only displays this message on new game
 		unlockItem("firstLaunchContainer");
 		let x = 0;
 		let T=window.setInterval(function(){
@@ -85,7 +76,7 @@ function closeFLWindow(){
 		if(x<=0){
 			clearInterval(T);
 			lockItem("firstLaunchContainer");
-			game.oneOff[0]=1;
+			game.firstLaunchOneOff=1;
 		}
 	},5);
 }
@@ -94,7 +85,7 @@ function closeFLWindow(){
 
 //--offline progression--//
 function offlineOnLoad(){
-	if(game.oneOff[0]==1){//Wont fire offline progress unless the user has played before
+	if(game.firstLaunchOneOff==1){//Wont fire offline progress unless the user has played before
 		unlockItem("offlineProgressContainer");
 		for(var A=0;A<buildings.length;A++){
 			PPS=PPS+=(game.bQty[A]*buildings[A].perSec);
@@ -146,10 +137,6 @@ function offlineOnLoad2(){
 		break;
 		case x<PPS/100:
 			x+=PPS/1000;
-			document.getElementById("offlinePartsNumb").innerHTML=x.toLocaleString();
-		break;
-		case x<PPS/10:
-			x+=PPS/100;
 			document.getElementById("offlinePartsNumb").innerHTML=x.toLocaleString();
 		break;
 		case x<PPS:
@@ -316,7 +303,7 @@ function resetNo(){
 
 //--lock and unlock classes--//
 function lockItem(item){
-document.getElementById(item).className = document.getElementById(item).className + "locked";
+document.getElementById(item).className = document.getElementById(item).className + " locked";
 }
 function unlockItem(item){
 document.getElementById(item).className = document.getElementById(item).className.replace("locked","");
@@ -410,8 +397,10 @@ function sellParts(){
 		},50);
 	}
 };
+
+//--Selling C1--//
 function sellC1(){
-	if(canMoney==0){
+	if(canMoney2==0){
 		canMoney2=1;
 		let sellprogress=0;
 		let progresstimer = window.setInterval(function(){
@@ -430,10 +419,6 @@ function sellC1(){
 		},50);
 	}
 };
-
-
-
-
 
 //--Crafting C1--//
 function craftC1(){
@@ -456,3 +441,12 @@ function craftC1(){
 		},100);
 	}
 };
+
+//--unused code stolen from stackoverflow--//
+function getDigitCount(number) {
+  return Math.max(Math.floor(Math.log10(Math.abs(number))), 0) + 1;
+}
+function getDigit(number, n, fromLeft) {
+	const location = fromLeft ? getDigitCount(number) + 1 - n : n;
+	return Math.floor((number / Math.pow(10, location - 1)) % 10);
+}
