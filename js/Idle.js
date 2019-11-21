@@ -160,7 +160,7 @@ function loadItem(name,value){
 	items[id]=new Item();
 	items[id].name=name;
 	items[id].value=value;
-	if(localStorage.getItem('idleParts.gameSave') == null){
+	if(localStorage.getItem('idleParts.gameSave') == null){//sets owned items to zero for all items to prevent NaN
 	game.items[id] = 0;
 	}
 }
@@ -178,7 +178,7 @@ function loadBuilding(name,cost,persec){
 	buildings[id].bPerSec=persec;
 	buildings[id].cost=cost;
 	buildings[id].bCost=cost;
-	if(localStorage.getItem('idleParts.gameSave') == null){
+	if(localStorage.getItem('idleParts.gameSave') == null){//sets owned buildings to zero for all items to prevent NaN
 	game.bQty[id] = 0;
 	}
 }

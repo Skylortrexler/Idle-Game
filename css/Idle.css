@@ -22,12 +22,11 @@ font-family: 'Abel', sans-serif;
 	width:100%;
 	display:grid;
 	grid-template-columns:20% 20% 20% 20% 20%;
-	grid-template-rows:25% 25% 25% 25%;
+	grid-template-rows:33% 33% 33%;
 	grid-template-areas:
-	"craft sell- build upgra ....."
-	"stats ..... build ..... ....."
-	"..... ..... ..... ..... ....."
-	"..... ..... ..... ..... .....";
+	"craft sell- ..... build upgra"
+	"stats ..... spinn ..... ....."
+	"..... ..... spinn ..... .....";
 	justify-items: stretch;
 }
 
@@ -45,6 +44,9 @@ font-family: 'Abel', sans-serif;
 }
 #sellingContainer{
 	grid-area:sell-;
+}
+#spinnerContainer{
+	grid-area:spinn;
 }
 
 
