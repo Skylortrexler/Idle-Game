@@ -26,7 +26,7 @@ var date = new Date();
 	canMoney=0;//are required to
 	canMoney2=0;//prevent the bars
 	canC1=0;//from being spammed
-
+	canSpin=0
 	
 	game={
 	parts:0,
@@ -47,53 +47,7 @@ if(	localStorage.getItem('idleParts.gameSave') !== null){//if there is a save
 		
 }
 ////////////////////////////////////////////////////////////////////////////
-var canSpin=0
-function spinSlots(){
-	if (canSpin==0){
-		let seed=randomInt(2,5)*randomInt(5,10);
-		slot1Seed=seed+randomInt(1,5)*randomInt(2,4);
-		slot2Seed=seed+randomInt(5,10)*randomInt(4,6);
-		slot3Seed=seed+randomInt(10,15)*randomInt(4,6);
-		console.log("seed:"+seed,"s1:"+slot1Seed,"s2:"+slot2Seed,"s3:"+slot3Seed);
-		let s1=0;
-		s2=0;
-		s3=0;
-		s1T=setInterval(function(){
-			s1++;
-			if (s1>=slot1Seed){
-				clearInterval(s1T);
-			}
-			let slotTile = document.getElementById("slot1");
-			if (slotTile.className=="a7"){
-				slotTile.className = "a0";
-			}
-			slotTile.className = "a"+(parseInt(slotTile.className.substring(1))+1)
-		},50);
-		s2T=setInterval(function(){
-			s2++;
-			if (s2>=slot2Seed){
-				clearInterval(s2T);
-			}
-			let slotTile = document.getElementById("slot2");
-			if (slotTile.className=="a7"){
-				slotTile.className = "a0";
-			}
-			slotTile.className = "a"+(parseInt(slotTile.className.substring(1))+1)
-		},50);
-		s3T=setInterval(function(){
-			s3++;
-			if (s3>=slot3Seed){
-				clearInterval(s3T);
-			}
-			let slotTile = document.getElementById("slot3");
-			if (slotTile.className=="a7"){
-				slotTile.className = "a0";
-			}
-			slotTile.className = "a"+(parseInt(slotTile.className.substring(1))+1)
-		},50);
 
-	}
-}
 ////////////////////////////////////////////////////////////////////////////
 
 
@@ -127,6 +81,152 @@ function closeFLWindow(){
 	},5);
 }
 
+//--slot machine--//
+function spinSlots(){
+	if (canSpin==0 && game.money>=10){
+		game.money-=10;
+		document.getElementById("money").innerHTML = game.money.toLocaleString();
+		canSpin=1;
+		disableItem("slotButton");
+		let slot1Seed=randomInt(20,40);
+		slot2Seed=randomInt(40,60);
+		slot3Seed=randomInt(60,80);
+		s1=0;
+		s2=0;
+		s3=0;
+		trueSeed=randomInt(0,20000);
+		ts1=0;
+		ts2=0;
+		ts3=0;
+		
+		switch(true){
+			case trueSeed>=0 && trueSeed<=50:
+				ts1=1;ts2=1;ts3=1;
+			break;
+			case trueSeed>=51 && trueSeed<=250:
+				ts1=2;ts2=2;ts3=2;
+			break;
+			case trueSeed>=251 && trueSeed<=1000:
+				ts1=3;ts2=3;ts3=3;
+			break;
+			case trueSeed>=1001 && trueSeed<=2000:
+				ts1=4;ts2=4;ts3=4;
+			break;
+			case trueSeed>=2001 && trueSeed<=3500:
+				ts1=5;ts2=5;ts3=5;
+			break;
+			case trueSeed>=3501 && trueSeed<=6000:
+				ts1=6;ts2=6;ts3=6;
+			break;
+			case trueSeed>=6001 && trueSeed<=11000:
+				ts1=7;ts2=7;ts3=7;
+			break;
+			case trueSeed>=11001 && trueSeed<=20000:
+				ts1=randomInt(1,5);ts2=randomInt(1,5);ts3=randomInt(6,7);
+			break;
+		}
+		
+		console.log("s1:"+slot1Seed,"s2:"+slot2Seed,"s3:"+slot3Seed,"trueseed:"+trueSeed);
+		console.log(ts1,ts2,ts3);
+		
+		s1T=setInterval(function(){
+			s1++;
+			let slotTile = document.getElementById("slot1");
+			if (slotTile.className=="a7"){
+				slotTile.className = "a0";
+			}
+			if (s1>=slot1Seed){
+				clearInterval(s1T);
+				slotTile.className = "a"+(ts1-1)
+			}
+			slotTile.className = "a"+(parseInt(slotTile.className.substring(1))+1)
+		},50);
+		s2T=setInterval(function(){
+			s2++;
+			let slotTile = document.getElementById("slot2");
+			if (slotTile.className=="a7"){
+				slotTile.className = "a0";
+			}
+			if (s2>=slot2Seed){
+				clearInterval(s2T);
+				slotTile.className = "a"+(ts2-1)
+			}
+			slotTile.className = "a"+(parseInt(slotTile.className.substring(1))+1)
+		},50);
+		s3T=setInterval(function(){
+			s3++;
+			let slotTile = document.getElementById("slot3");
+			if (slotTile.className=="a7"){
+				slotTile.className = "a0";
+			}
+			if (s3>=slot3Seed){
+				clearInterval(s3T);
+				slotTile.className = "a"+(ts3-1)
+				enableItem("slotButton");
+				canSpin=0;
+				winCheck(ts1,ts2,ts3);
+			}
+			slotTile.className = "a"+(parseInt(slotTile.className.substring(1))+1)
+		},50);
+
+	}
+}
+function winCheck(x,y,z){
+	document.getElementById("spinnerWinnings").style.opacity="100%";
+	switch(true){
+		case x==1&&y==1&&z==1:
+			document.getElementById("spinnerWinnings").innerHTML="SUPER JACKPOT!!!";
+			game.money+=1000000;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+		break;
+		case x==2&&y==2&&z==2:
+			document.getElementById("spinnerWinnings").innerHTML="JACKPOT!";
+			game.money+=100000;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+		break;
+		case x==3&&y==3&&z==3:
+			document.getElementById("spinnerWinnings").innerHTML="Minor Jackpot!";
+			game.money+=10000;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+		break;
+		case x==4&&y==4&&z==4:
+			document.getElementById("spinnerWinnings").innerHTML="Big Win!";
+			game.money+=1000;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+		break;
+		case x==5&&y==5&&z==5:
+			document.getElementById("spinnerWinnings").innerHTML="Small Win!";
+			game.money+=100;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+		break;
+		case x==6&&y==6&&z==6:
+			document.getElementById("spinnerWinnings").innerHTML="Broke Even!";
+			game.money+=10;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+		break;
+		case x==7&&y==7&&z==7:
+			document.getElementById("spinnerWinnings").innerHTML="Small Loss!";
+			game.money+=5;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+		break;
+		case x!==z:
+			document.getElementById("spinnerWinnings").innerHTML="Try again!";
+		break;
+	}
+	let a=100;
+	let T=window.setInterval(function(){
+		a--;
+		document.getElementById("spinnerWinnings").style.opacity=a+"%";
+		if(a<=0){
+			clearInterval(T);
+		}
+	},30);
+
+}
+function toggleOdds(){
+	let x=document.getElementById("oddsChart");
+	x.classList.toggle("locked");
+}
 
 
 //--offline progression--//
@@ -242,7 +342,7 @@ function updateData(){
 	document.getElementById("building3Cost").innerHTML = "cost: " + buildings[2].cost.toLocaleString();
 	document.getElementById("building3PerSec").innerHTML = "Parts/sec " + buildings[2].perSec;
 	document.getElementById("money").innerHTML = game.money.toLocaleString();
-	document.getElementById("c1Qty").innerHTML=game.items[0];
+	document.getElementById("c1Qty").innerHTML=game.items[0].toLocaleString();
 }
 function updateParts(){
 	document.getElementById("parts").innerHTML = game.parts.toLocaleString();
@@ -488,7 +588,7 @@ function craftC1(){
 	}
 };
 
-//--unused code stolen from stackoverflow--//
+//--code stolen from stackoverflow--//
 function getDigitCount(number) {
   return Math.max(Math.floor(Math.log10(Math.abs(number))), 0) + 1;
 }
