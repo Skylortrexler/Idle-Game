@@ -47,7 +47,53 @@ if(	localStorage.getItem('idleParts.gameSave') !== null){//if there is a save
 		
 }
 ////////////////////////////////////////////////////////////////////////////
+var canSpin=0
+function spinSlots(){
+	if (canSpin==0){
+		let seed=randomInt(2,5)*randomInt(5,10);
+		slot1Seed=seed+randomInt(1,5)*randomInt(2,4);
+		slot2Seed=seed+randomInt(5,10)*randomInt(4,6);
+		slot3Seed=seed+randomInt(10,15)*randomInt(4,6);
+		console.log("seed:"+seed,"s1:"+slot1Seed,"s2:"+slot2Seed,"s3:"+slot3Seed);
+		let s1=0;
+		s2=0;
+		s3=0;
+		s1T=setInterval(function(){
+			s1++;
+			if (s1>=slot1Seed){
+				clearInterval(s1T);
+			}
+			let slotTile = document.getElementById("slot1");
+			if (slotTile.className=="a7"){
+				slotTile.className = "a0";
+			}
+			slotTile.className = "a"+(parseInt(slotTile.className.substring(1))+1)
+		},50);
+		s2T=setInterval(function(){
+			s2++;
+			if (s2>=slot2Seed){
+				clearInterval(s2T);
+			}
+			let slotTile = document.getElementById("slot2");
+			if (slotTile.className=="a7"){
+				slotTile.className = "a0";
+			}
+			slotTile.className = "a"+(parseInt(slotTile.className.substring(1))+1)
+		},50);
+		s3T=setInterval(function(){
+			s3++;
+			if (s3>=slot3Seed){
+				clearInterval(s3T);
+			}
+			let slotTile = document.getElementById("slot3");
+			if (slotTile.className=="a7"){
+				slotTile.className = "a0";
+			}
+			slotTile.className = "a"+(parseInt(slotTile.className.substring(1))+1)
+		},50);
 
+	}
+}
 ////////////////////////////////////////////////////////////////////////////
 
 
@@ -449,4 +495,7 @@ function getDigitCount(number) {
 function getDigit(number, n, fromLeft) {
 	const location = fromLeft ? getDigitCount(number) + 1 - n : n;
 	return Math.floor((number / Math.pow(10, location - 1)) % 10);
+}
+function randomInt(min, max){
+	return Math.floor((Math.random()*(max-min+1)) + min);
 }
