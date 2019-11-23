@@ -47,21 +47,23 @@ font-family: 'Abel', sans-serif;
 }
 #spinnerOuterContainer{
 	grid-area:spinn;
+	position: relative;
+    top: -75;
 }
 
+#spinnerWinningsContainer{
+	opacity:0%;
+}
 
-
-
-#spinnerWinnings{
-    z-index: 1;
-    font-weight: bold;
+#spinnerWinningsText,#spinnerWinningsValue,#spinnerWinningsContainer{
+	z-index: 1;
     color: #322923;
     pointer-events: none;
     position: relative;
     top: -100;
     text-align-last: center;
-	opacity:0;
-	font-size:50px;
+    font-size: 55px;
+    -webkit-text-stroke: 2px #cdb590;
 }
 #spinnerButtons{
 	display:flex;
@@ -160,9 +162,46 @@ background-image: url("../img/7.png");}
 	height:180px;
 	margin-top:5px;
 	background:#322923;
-    top: -65;
+    top: -140;
+	z-index:1;
 }
+#jackpotOuterContainer {
+    width: fit-content;
+    padding: 10;
+    margin: 5 auto;
+}
+#jackpotContainer{
+    background-color: #513e2e;
+    border-radius: 25px;
+    padding: 0 15;
+    border-width:10px;
+	border-style:solid;
+    color:#eabe7c;
+	font-size:40px;
+}
+.jC1{
+    border-color:#816f53;
+}
+.jC2{
+    border-color:#eabe7c;
+}
+.jC3{
+    border-color:#cdb590;
+}
+.jC4{
+    border-color:#896038;
+}
+#jackpotTitle{
+    background-color: #513e2e;
+    border-radius: 50px;
+    padding:0 10;
+    margin: 5 0;
+    color:#eabe7c;
+    font-size: 30px;
+	border-width:10px;
+	border-style:solid;
 
+	}
 .FL{
 	text-align:center;
 	margin:10px;

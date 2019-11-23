@@ -117,6 +117,10 @@
 			</div>
 			
 			<div id=spinnerOuterContainer>
+				<div id=jackpotOuterContainer>
+					<div id=jackpotTitle class=jC1>SUPER JACKPOT</div>
+					<div id=jackpotContainer class=jC1></div>
+				</div>
 				<div id=spinnerContainer>
 					<div id=spinnerInnerContainer>
 						<div id=slot1Wrapper>
@@ -130,11 +134,14 @@
 						</div>
 					</div>
 					<div id=spinnerButtons>
-						<input id=slotButton type=button class="button slotButton" value=Spin onclick=spinSlots();>
+						<input id=slotButton type=button class="button slotButton" value="Spin ($10)" onclick=spinSlots();>
 						<input id=oddsButton type=button class="button slotButton" value=Odds onclick=toggleOdds();>
 					</div>
 				</div>
-				<div id=spinnerWinnings class=label1>placeholder</div>
+				<div id=spinnerWinningsContainer>
+					<div id=spinnerWinningsText>placeholder</div>
+					<div id=spinnerWinningsValue>placeholder</div>
+				</div>
 				<div id=oddsChart class=locked>
 					<div id=oddsOuterContainer>
 						<div id=oddsContainer1>
