@@ -26,7 +26,6 @@
 				
 			<div id=craftingContainer class=block>
 				<div id=partsTitle class=label1>Craft a part (2s)</div>
-					<!-- <input id=moneybutton type=button class=moneybutton onclick=GatherMoney()> -->
 				<div id=partsProgress class=progress onclick=gatherParts()>
 					<div class="progressBar" id=partsBar role="progressBar" style="width: 0%" onclick=gatherParts()>
 					<span class="progressBarSpan" id=partsProgressSpan>CLICK</span>
@@ -41,8 +40,7 @@
 			</div>
 				
 			<div id=statContainer class=block>
-				<!-- <div id=stattitle>Stats</div> -->
-				<div id=stats >
+				<div id=stats>
 					<div id=statBlock1 class=stats>
 						<div class=label1>Parts</div>
 						<div id=parts class=label2>0</div>
@@ -121,7 +119,7 @@
 					<div id=jackpotTitle class=jC1>SUPER JACKPOT</div>
 					<div id=jackpotContainer class=jC1></div>
 				</div>
-				<div id=spinnerContainer>
+				<div id=spinnerContainer class=jC1>
 					<div id=spinnerInnerContainer>
 						<div id=slot1Wrapper>
 							<div id=slot1 class=a1></div>
@@ -141,6 +139,16 @@
 				<div id=spinnerWinningsContainer>
 					<div id=spinnerWinningsText>placeholder</div>
 					<div id=spinnerWinningsValue>placeholder</div>
+				</div>
+				<div id=spinnerExtraBits>
+					<div id=extraBitsSides class=spinnerExtraBits></div>
+					<div id=extraBitsBottom class="spinnerExtraBits extraBitsBottomRetracted"></div>
+				</div>
+				<div id=costToPlay>-$10</div>
+				<div id=payoutCoinsOuterContainer>
+					<div id=payoutCoinsContainer>
+						
+					</div>
 				</div>
 				<div id=oddsChart class=locked>
 					<div id=oddsOuterContainer>
@@ -192,7 +200,16 @@
 					</div>
 				</div>
 			</div>
-			
+			<div id=playerStatsOuterContainer>
+				<div id=playerStatContainer>
+					<div id=partsClicked class=label1>Parts Crafted: 0</div>
+					<div id=partsSold class=label1>Parts Sold: 0</div>
+					<div id=c1Crafted class=label1>C1 Crafted: 0</div>
+					<div id=c1Sold class=label1>C1 Sold: 0</div>
+					<div id=timesGambled class=label1>Times Gambled: 0</div>
+					<div id=gambleProfit class=label1>Gambling Profits: 0</div>
+				</div>
+			</div>
 			<div id=resetContainer class=locked>
 				Are you sure?
 				<input type=button class=button value=Yes onclick=reset();>

@@ -37,6 +37,7 @@ var date = new Date();
 	time:date.getTime(),
 	firstLaunchOneOff:0,
 	rollingJackpot:1000000,
+	stats:[0,0,0,0,0,0]
 	};
 	
 	
@@ -86,15 +87,26 @@ function closeFLWindow(){
 function spinSlots(){
 	if (canSpin==0 && game.money>=10){
 		game.money-=10;
-		game.rollingJackpot+=10;
+		game.rollingJackpot+=100;
+		game.stats[1]+=1;
+		game.stats[5]-=10;
 		document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 		document.getElementById("jackpotContainer").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 		document.getElementById("money").innerHTML = game.money.toLocaleString();
 		canSpin=1;
 		disableItem("slotButton");
+		let a=100;
+		let T=window.setInterval(function(){
+		a--;
+		document.getElementById("costToPlay").style.opacity=a+"%";
+		document.getElementById("costToPlay").style.bottom=a-100;
+		if(a<=0){
+			clearInterval(T);
+		}
+	},30);
 		let slot1Seed=randomInt(20,40);
 		slot2Seed=randomInt(40,60);
-		slot3Seed=randomInt(60,80);
+		slot3Seed=randomInt(60,100);
 		s1=0;
 		s2=0;
 		s3=0;
@@ -181,6 +193,7 @@ function winCheck(x,y,z){
 			document.getElementById("spinnerWinningsText").innerHTML="SUPER JACKPOT!!!";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$"+game.rollingJackpot.toLocaleString();
 			game.money+=game.rollingJackpot;
+			game.stats[5]+=game.rollingJackpot;
 			game.rollingJackpot=1000000;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
 			document.getElementById("jackpotContainer").innerHTML = "$"+game.rollingJackpot.toLocaleString();
@@ -188,77 +201,148 @@ function winCheck(x,y,z){
 			let m=window.setInterval(function(){
 				n++;
 				let potColor = document.getElementById("jackpotContainer");
-				let potColor2 = document.getElementById("jackpotTitle");
+				potColor2 = document.getElementById("jackpotTitle");
+				potColor3 = document.getElementById("spinnerContainer");
 				if (potColor.className=="jC4"){
 					potColor.className = "jC0";
 				}
 				if (potColor2.className=="jC4"){
 					potColor2.className = "jC0";
 				}
+				if (potColor3.className=="jC4"){
+					potColor3.className = "jC0";
+				}
 				potColor.className = "jC"+(parseInt(potColor.className.substring(2))+1)
-				potColor2.className = "jC"+(parseInt(potColor.className.substring(2))+1)
-				if(n>=100){
+				potColor2.className = "jC"+(parseInt(potColor2.className.substring(2))+1)
+				potColor3.className = "jC"+(parseInt(potColor3.className.substring(2))+1)
+				if(n>=80){
 					clearInterval(m);
 					potColor.className="jC1";
 					potColor2.className="jC1";
+					potColor3.className="jC1";
 					}
 			},50);
+			coinFall(100);
 		break;
 		case x==2&&y==2&&z==2:
 			document.getElementById("spinnerWinningsText").innerHTML="JACKPOT!";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$100,000";
 			game.money+=100000;
+			game.stats[5]+=100000;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			let a=0;
+			let b=window.setInterval(function(){
+				a++;
+				let potColor3 = document.getElementById("spinnerContainer");
+				if (potColor3.className=="jC4"){
+					potColor3.className = "jC0";
+				}
+				potColor3.className = "jC"+(parseInt(potColor3.className.substring(2))+1)
+				if(a>=60){
+					clearInterval(b);
+					potColor3.className="jC1";
+					}
+			},50);
+			coinFall(50);
 		break;
 		case x==3&&y==3&&z==3:
 			document.getElementById("spinnerWinningsText").innerHTML="Minor Jackpot!";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$10,000";
 			game.money+=10000;
+			game.stats[5]+=10000;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			coinFall(35);
 		break;
 		case x==4&&y==4&&z==4:
 			document.getElementById("spinnerWinningsText").innerHTML="Big Win!";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$1,000";
 			game.money+=1000;
+			game.stats[5]+=1000;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			coinFall(20);
 		break;
 		case x==5&&y==5&&z==5:
 			document.getElementById("spinnerWinningsText").innerHTML="Small Win!";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$100";
 			game.money+=100;
+			game.stats[5]+=100;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			coinFall(10);
 		break;
 		case x==6&&y==6&&z==6:
-			document.getElementById("spinnerWinningsText").innerHTML="Broke Even!";
+			document.getElementById("spinnerWinningsText").innerHTML=" ";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$10";
 			game.money+=10;
+			game.stats[5]+=10;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			coinFall(5);
 		break;
 		case x==7&&y==7&&z==7:
-			document.getElementById("spinnerWinningsText").innerHTML="Small Loss!";
+			document.getElementById("spinnerWinningsText").innerHTML=" ";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$5";
 			game.money+=5;
+			game.stats[5]+=5;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			coinFall(1);
 		break;
 		case x!==z:
-			document.getElementById("spinnerWinningsText").innerHTML="Try again!";
-			document.getElementById("spinnerWinningsValue").innerHTML=" ";
+			document.getElementById("spinnerWinningsText").innerHTML=" ";
+			document.getElementById("spinnerWinningsValue").innerHTML="Try again!";
 		break;
 	}
 	let a=100;
 	let T=window.setInterval(function(){
 		a--;
 		document.getElementById("spinnerWinningsContainer").style.opacity=a+"%";
-		document.getElementById("spinnerWinningsContainer").style.top=a+(-200);
+		document.getElementById("spinnerWinningsContainer").style.top=a-50;
 		if(a<=0){
 			clearInterval(T);
 		}
 	},30);
 
 }
+
+function coinFall(amount){ 
+	y=0;
+	coinPos2=0;
+	for(x=1;x<=amount;x++){
+			let coinDiv = document.createElement("div");
+			coinDiv.classList="coin";
+			coinDiv.id="coin"+x;
+			document.getElementById("payoutCoinsContainer").appendChild(coinDiv);
+			let coin=document.getElementById("coin"+x);	
+			coinPos=randomInt(0,275);
+			coinPos2=400-coinPos;
+			coin.style.left=randomInt(10,290);
+			coin.style.top=coinPos;
+			coin.style.opacity=(coinPos2+100)/100;
+		}
+	T=window.setInterval(function(){
+		for(x=1;x<=amount;x++){
+			let coin=document.getElementById("coin"+x);	
+			coin.style.marginTop=y;
+			coin.style.opacity-=0.01;
+			if(coin.style.opacity<=0){
+				coin.classList="locked";
+			}
+		}
+		y++;
+		if(y>=500){
+			clearInterval(T);
+			for(x=1;x<=amount;x++){
+				let coin=document.getElementById("coin"+x);	
+				document.getElementById("payoutCoinsContainer").removeChild(coin);
+			}
+		}
+	},1);
+}
+	
 function toggleOdds(){
 	let x=document.getElementById("oddsChart");
+	y=document.getElementById("extraBitsBottom");
 	x.classList.toggle("locked");
+	y.classList.toggle("extraBitsBottomRetracted");
+	y.classList.toggle("extraBitsBottomExtended");	
 }
 
 
@@ -345,9 +429,9 @@ function loadItem(name,value){
 }
 
 function initBuildings(){//name,cost,persec
-	loadBuilding("Cheap Employee",10,0.2);
-	loadBuilding("Good Employee",100,0.5);
-	loadBuilding("Robot",1000,1);
+	loadBuilding("Cheap Robot",10,0.2);
+	loadBuilding("Robot",100,0.5);
+	loadBuilding("Good Robot",1000,1);
 }
 function loadBuilding(name,cost,persec){
 	let id = buildings.length;
@@ -382,6 +466,14 @@ function updateData(){
 function updateParts(){
 	document.getElementById("parts").innerHTML = game.parts.toLocaleString();
 	document.getElementById("money").innerHTML = game.money.toLocaleString();
+}
+function updateStats(){
+	document.getElementById("partsClicked").innerHTML="Parts Crafted: "+game.stats[0];
+	document.getElementById("timesGambled").innerHTML="Times Gambled: "+game.stats[1];
+	document.getElementById("partsSold").innerHTML="Parts Sold: "+game.stats[2];
+	document.getElementById("c1Crafted").innerHTML="C1 Crafted: "+game.stats[3];
+	document.getElementById("c1Sold").innerHTML="C1 Sold: "+game.stats[4];
+	document.getElementById("gambleProfit").innerHTML="Gambling Profits: "+game.stats[5];
 }
 
 function updateUpgrades(){
@@ -513,7 +605,7 @@ function manualSave(){
 
 //Global tick timer
 var Timerparts = window.setInterval(function(){partsTick()}, 1000);
-var TimerUpdate = window.setInterval(function(){updateTick()}, 1000);
+var TimerUpdate = window.setInterval(function(){updateTick();updateStats();}, 1000);
 var Timermoney = window.setInterval(function(){moneyTick()},1000);
 
 
@@ -548,6 +640,7 @@ function gatherParts(){
 			document.getElementById("partsProgressSpan").innerHTML=partsProgress+"%";
 			if(partsProgress>=100){
 				game.parts++;
+				game.stats[0]+=1;
 				clearInterval(progresstimer);
 				document.getElementById("partsBar").style.width=partsProgress+"%";
 				document.getElementById("parts").innerHTML = game.parts.toLocaleString();
@@ -568,6 +661,7 @@ function sellParts(){
 			document.getElementById("money1ProgressSpan").innerHTML=sellprogress+"%";
 			if(sellprogress>=100){
 				game.money+=rounddown(game.parts,0);
+				game.stats[2]+=rounddown(game.parts,0);
 				game.parts=0;
 				clearInterval(progresstimer);
 				document.getElementById("money1Bar").style.width=sellprogress+"%";
@@ -591,6 +685,7 @@ function sellC1(){
 			if(sellprogress>=100){
 				game.money+=rounddown(game.items[0]*items[0].value,0);
 				game.items[0]=0;
+				game.stats[4]+=rounddown(game.items[0],0);
 				clearInterval(progresstimer);
 				document.getElementById("money2Bar").style.width=sellprogress+"%";
 				document.getElementById("money").innerHTML = game.money.toLocaleString();
@@ -613,7 +708,8 @@ function craftC1(){
 			document.getElementById("c1Bar").style.width=C1progress+"%";
 			document.getElementById("c1ProgressSpan").innerHTML=C1progress+"%";
 			if(C1progress>=100){
-				game.items[0]+=1
+				game.items[0]+=1;
+				game.stats[3]+=1;
 				clearInterval(progresstimer);
 				document.getElementById("c1Bar").style.width=C1progress+"%";
 				canC1=0;

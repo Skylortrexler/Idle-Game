@@ -1,384 +1,476 @@
-/*palette
-#322923 Very dark (mostly black) orange [Brown tone].
-#513e2e Very dark desaturated orange.
-#896038 Dark moderate orange.
-#d7a05b Moderate orange.
-#eabe7c Soft orange.
-#cdb590 Slightly desaturated orange.
-#aa916a Mostly desaturated dark orange.
-#816f53 Mostly desaturated dark orange.
-*/
-body{
-background-image: url("../img/bg.png"); /* https://loading.io/pattern/m-lines */
-/*background: #896038;*/
-margin:0px;
-padding:0px;
-color:#d7a05b;
-font-family: 'Abel', sans-serif;
-}
-
-#game{
-	height:100%;
-	width:100%;
-	display:grid;
-	grid-template-columns:20% 20% 20% 20% 20%;
-	grid-template-rows:33% 33% 33%;
-	grid-template-areas:
-	"craft sell- stats build upgra"
-	"..... ..... spinn ..... ....."
-	"..... ..... ..... ..... .....";
-	justify-items: stretch;
-}
-
-#statContainer{
-	grid-area:stats;
-}
-#buildingContainer{
-	grid-area:build;
-}
-#upgradeContainer{
-	grid-area:upgra;
-}
-#craftingContainer{
-	grid-area:craft;
-}
-#sellingContainer{
-	grid-area:sell-;
-}
-#spinnerOuterContainer{
-	grid-area:spinn;
-	position: relative;
-    top: -75;
-}
-
-#spinnerWinningsContainer{
-	opacity:0%;
-}
-
-#spinnerWinningsText,#spinnerWinningsValue,#spinnerWinningsContainer{
-	z-index: 1;
-    color: #322923;
-    pointer-events: none;
-    position: relative;
-    top: -100;
-    text-align-last: center;
-    font-size: 55px;
-    -webkit-text-stroke: 2px #cdb590;
-}
-#spinnerButtons{
-	display:flex;
-	justify-content:center;
-	align-items:center;
-}
-#spinnerContainer{
-	background: #513e2e;
-    border-radius: 5px;
-    border: 2px solid #eabe7c;
-    width: auto;
-    margin-left: auto;
-    margin-right: auto;
-}
-#spinnerInnerContainer{
-	display:flex;
-	justify-content:center;
-	align-items:center;
-}
-.a1{
-background-image: url("../img/1.png");}
-.a2{
-background-image: url("../img/2.png");}
-.a3{
-background-image: url("../img/3.png");}
-.a4{
-background-image: url("../img/4.png");}
-.a5{
-background-image: url("../img/5.png");}
-.a6{
-background-image: url("../img/6.png");}
-.a7{
-background-image: url("../img/7.png");}
-#slot1, #slot2, #slot3{
-	display: inline-block;
-	background-size: 80px;
-	width: 80px;
-	height: 80px;
-}
-#oddsA1,#oddsA2,#oddsA3,#oddsA4,#oddsA5,#oddsA6,#oddsA7,#oddsD1,#oddsD2,#oddsD3,#oddsD4,#oddsD5,#oddsD6,#oddsD7{
-	display: block;
-	background-size: 20px;
-	width: 20px;
-	height: 20px;
-	margin:5 0;
-	margin-left:5;
-}
-#oddsB1,#oddsB2,#oddsB3,#oddsB4,#oddsB5,#oddsB6,#oddsB7,#oddsC1,#oddsC2,#oddsC3,#oddsC4,#oddsC5,#oddsC6,#oddsC7{
-	display: block;
-	background-size: 20px;
-	width: 20px;
-	height: 20px;
-	margin:5 0;
-}
-#oddsE1,#oddsE2,#oddsE3,#oddsE4,#oddsE5,#oddsE6,#oddsE7{
-	display: block;
-	margin:5 0;
-	height: 20px;
-	margin-left:10px;
-	text-align:right;
-}
-#oddsContainer1,#oddsContainer2,#oddsContainer3{
-	display:inline-block;
-	position: relative;
-    left: 40%;
-}
-#oddsContainer4{
-	display:inline-block;
-	position:absolute;
-	left:230px;
-}
-#oddsContainer5{
-	display:inline-block;
-	position:absolute;
-	left:0px;
-}
-#slot1Wrapper,#slot2Wrapper,#slot3Wrapper{
-	background:white;
-	display: inline-block;
-	margin-top: 5px;
-	margin-left: 15px;
-	margin-right: 15px;
-	border-radius:5px;
-	border:2px solid #eabe7c;
-}
-.slotButton{
-	margin:5;
-}
-#oddsChart{
-	position:relative;
-	justify-content:center;
-	align-items:center;
-	border-radius:5px;
-	border:2px solid #eabe7c;
-	width:380px;
-	height:180px;
-	margin-top:5px;
-	background:#322923;
-    top: -140;
-	z-index:1;
-}
-#jackpotOuterContainer {
-    width: fit-content;
-    padding: 10;
-    margin: 5 auto;
-}
-#jackpotContainer{
-    background-color: #513e2e;
-    border-radius: 25px;
-    padding: 0 15;
-    border-width:10px;
-	border-style:solid;
-    color:#eabe7c;
-	font-size:40px;
-}
-.jC1{
-    border-color:#816f53;
-}
-.jC2{
-    border-color:#eabe7c;
-}
-.jC3{
-    border-color:#cdb590;
-}
-.jC4{
-    border-color:#896038;
-}
-#jackpotTitle{
-    background-color: #513e2e;
-    border-radius: 50px;
-    padding:0 10;
-    margin: 5 0;
-    color:#eabe7c;
-    font-size: 30px;
-	border-width:10px;
-	border-style:solid;
-
-	}
-.FL{
-	text-align:center;
-	margin:10px;
-}
-
-#popupContainer{
-	position:absolute;
-	width:100%;
-	height:100%;
-	pointer-events: none;
-}
-
-#firstLaunchContainer{
-	background-color: rgba(0,0,0,.6);
-	position:absolute;
-	width:100%;
-	height:100%;
-	opacity:0%;
-	z-index:1;
-	pointer-events: auto
-}
-#firstLaunch{
-	background:#513e2e;
-	position:absolute;
-	left:35%;
-	top:30%;
-	width:30%;
-	height:30%;
-	border-radius:10px;
-	border:2px solid #eabe7c;
-
-}
-#FLButton{
-	position:absolute;
-	left:45%;
-	bottom:3%;	
-}
-
-#resetContainer{
-	width:250px;
-	height:50px;
-	background:#513e2e;
-	border:2px solid #eabe7c;
-	border-radius:10px;
-	padding:5px;
-	position:absolute;
-	bottom:50px;
-	font-size:30px;
-	left:5px;
-	}
-
-#offlineProgressContainer{
-	background-color: rgba(0,0,0,.6);
-	position:absolute;
-	width:100%;
-	height:100%;
-	opacity:0%;
-	z-index:1;
-	pointer-events: auto
-}
-#offlineProgress{
-	background:#513e2e;
-	position:absolute;
-	left:35%;
-	top:30%;
-	width:30%;
-	height:30%;
-	border-radius:10px;
-	border:2px solid #eabe7c;
-}
-#offlineButton{
-	position:absolute;
-	left:45%;
-	bottom:3%;	
-}
-.offline{
-	margin-top:5px;
-	text-align:center;
-}
-
-.stats{
-	width:45%;
-}
-.options{
+#FLButton {
+bottom:3%;
+left:225px;
 position:absolute;
+}
+
+#buildingContainer {
+grid-area:build;
+position:absolute;
+top:350px;
+}
+
+#costToPlay {
 bottom:0;
-}
-#upgrades{
-	display:inline-block;
-}
-.upgrade{
-	margin-top:5px;
-}
-.buildings{
-	display:inline-block; 
-	padding:5px;
-}
-.stats{
-	display:inline-block;
-	padding:5px;
-}
-.block{
-	font-size:30px;
-	text-align: center;
-	margin-top: 30px;
-	margin-left:10px;
-	margin-right:10px;
-	margin-bottom:10px;
-	padding:5px;
-
+color:#ffebcc;
+font-size:50px;
+margin:auto;
+opacity:0;
+pointer-events:none;
+position:absolute;
+text-align-last:center;
+width:inherit;
+z-index:1;
 }
 
-.label1{
-	font-size:21px;
+#craftingContainer {
+grid-area:craft;
+position:absolute;
 }
-.label2{
-	font-size:16px;
+
+#extraBitsBottom {
+left:5px;
+position:relative;
+top:90px;
+width:330px;
 }
-.label3{
-	font-size:30px;
+
+#extraBitsSides {
+border-radius:30px;
+height:200px;
+left:-25px;
+position:relative;
+top:90px;
+width:390px;
 }
-.label4{
-	font-size:40px;
+
+#firstLaunch {
+background:#513e2e;
+border:2px solid #eabe7c;
+border-radius:10px;
+height:225px;
+left:35%;
+position:absolute;
+top:30%;
+width:500px;
 }
+
+#firstLaunchContainer,#offlineProgressContainer {
+background-color:rgba(0,0,0,.6);
+height:100%;
+left:0;
+opacity:0;
+pointer-events:auto;
+position:absolute;
+top:0;
+width:100%;
+z-index:1;
+}
+
+#game {
+height:100%;
+width:100%;
+}
+
+#jackpotContainer {
+background-color:#513e2e;
+border-radius:25px;
+border-style:solid;
+border-width:10px;
+color:#eabe7c;
+font-size:40px;
+padding:0 15px;
+}
+
+#jackpotOuterContainer {
+margin:5px auto;
+padding:5px;
+width:fit-content;
+}
+
+#jackpotTitle {
+background-color:#513e2e;
+border-radius:50px;
+border-style:solid;
+border-width:10px;
+color:#eabe7c;
+font-size:30px;
+margin-bottom:5px;
+padding:0 10px;
+}
+
+#oddsA1,#oddsA2,#oddsA3,#oddsA4,#oddsA5,#oddsA6,#oddsA7,#oddsD1,#oddsD2,#oddsD3,#oddsD4,#oddsD5,#oddsD6,#oddsD7 {
+background-size:20px;
+display:block;
+height:20px;
+margin:5px 0 5px 5px;
+width:20px;
+}
+
+#oddsB1,#oddsB2,#oddsB3,#oddsB4,#oddsB5,#oddsB6,#oddsB7,#oddsC1,#oddsC2,#oddsC3,#oddsC4,#oddsC5,#oddsC6,#oddsC7 {
+background-size:20px;
+display:block;
+height:20px;
+margin:5px 0;
+width:20px;
+}
+
+#oddsChart {
+left:20px;
+position:relative;
+top:20px;
+width:320px;
+z-index:-2
+}
+
+#oddsContainer1,#oddsContainer2,#oddsContainer3 {
+display:inline-block;
+left:48%;
+position:relative;
+}
+
+#oddsContainer4 {
+display:inline-block;
+left:230px;
+position:absolute;
+}
+
+#oddsContainer5 {
+display:inline-block;
+left:0;
+position:absolute;
+}
+
+#oddsE1,#oddsE2,#oddsE3,#oddsE4,#oddsE5,#oddsE6,#oddsE7 {
+display:block;
+height:20px;
+margin:5px 0 5px 10px;
+text-align:right;
+}
+
+#offlineButton {
+bottom:3%;
+left:125px;
+position:absolute;
+}
+
+#offlineProgress {
+background:#513e2e;
+border:2px solid #eabe7c;
+border-radius:10px;
+height:220px;
+left:800px;
+position:absolute;
+top:300px;
+width:300px;
+}
+
+#playerStatsOuterContainer {
+height: fit-content;
+left: 1500px;
+position: absolute;
+top: 0;
+width: fit-content;
+}
+
+#popupContainer {
+height:100%;
+pointer-events:none;
+width:100%;
+}
+
+#resetContainer {
+background:#513e2e;
+border:2px solid #eabe7c;
+border-radius:10px;
+bottom:50px;
+font-size:30px;
+height:50px;
+left:5px;
+padding:5px;
+position:absolute;
+width:250px;
+}
+
+#sellingContainer {
+grid-area:sell-;
+left:200px;
+position:absolute;
+}
+
+#slot1,#slot2,#slot3 {
+background-size:80px;
+display:inline-block;
+height:80px;
+width:80px;
+}
+
+#slot1Wrapper,#slot2Wrapper,#slot3Wrapper {
+background:#FFF;
+border:5px solid #322923;
+border-radius:10px;
+display:inline-block;
+margin-left:10px;
+margin-right:10px;
+margin-top:5px;
+}
+
+#spinnerButtons,#spinnerInnerContainer {
+align-items:center;
+display:flex;
+justify-content:center;
+}
+
+#spinnerContainer {
+background:#513e2e;
+border-radius:10px;
+border-style:solid;
+border-width:5px;
+margin-left:auto;
+margin-right:auto;
+width:fit-content;
+}
+
+#spinnerExtraBits {
+height:inherit;
+left:0;
+pointer-events:none;
+position:inherit;
+top:0;
+width:inherit;
+}
+
+#spinnerOuterContainer {
+background-color:#322923;
+border-color:#cdb590;
+border-radius:10px;
+border-style:solid;
+border-top-left-radius:100px;
+border-top-right-radius:100px;
+border-width:5px;
+grid-area:spinn;
+height:310px;
+left:800px;
+position:absolute;
+top:50px;
+width:350px;
+}
+
+#spinnerWinningsContainer {
+color:#ffebcc;
+font-size:50px;
+margin:auto;
+opacity:0;
+pointer-events:none;
+position:absolute;
+text-align-last:center;
+top:0;
+width:inherit;
+z-index:1;
+}
+
+#statContainer {
+grid-area:stats;
+position:absolute;
+top:200px;
+width:400px;
+}
+
+#upgradeContainer {
+grid-area:upgra;
+position:absolute;
+top:600px;
+}
+
+#upgrades {
+display:inline-block;
+}
+
+.FL {
+margin:10px;
+text-align:center;
+}
+
+.a1{
+background-image:url(../img/1.png);
+}
+
+.a2 {
+background-image:url(../img/2.png);
+}
+
+.a3 {
+background-image:url(../img/3.png);
+}
+
+.a4 {
+background-image:url(../img/4.png);
+}
+
+.a5 {
+background-image:url(../img/5.png);
+}
+
+.a6 {
+background-image:url(../img/6.png);
+}
+
+.a7,.coin {
+background-image:url(../img/7.png);
+}
+
+.block {
+padding:5px;
+text-align:center;
+}
+
+.buildings,.stats {
+display:inline-block;
+padding:5px;
+}
+
 .button {
-	border-radius: 10px;
-	padding: 5px;
-	background: #513e2e;
-	text-decoration: none;
-	outline:none;
-	color:#d7a05b;
-	border: 2px solid #d7a05b;
-	font-family: 'Abel', sans-serif;
-	padding-left:10px;
-	padding-right:10px;
+background:#513e2e;
+border:2px solid #d7a05b;
+border-radius:10px;
+color:#d7a05b;
+font-family:Abel, sans-serif;
+outline:none;
+padding:5px 10px;
+text-decoration:none;
+}
+
+.button:disabled {
+background:#322923;
+border:2px solid #896038;
+border-radius:10px;
+color:#896038;
+outline:none;
+padding:5px 10px;
+pointer-events:none;
+text-decoration:none;
 }
 
 .button:hover {
-	background: #896038;
-	text-decoration: none;
+background:#896038;
+text-decoration:none;
 }
-.button:disabled{
-	border-radius: 10px;
-	padding: 5px;
-	background: #322923;
-	text-decoration: none;
-	outline:none;
-	color:#896038;
-	border: 2px solid #896038;
-	padding-left:10px;
-	padding-right:10px;
-}
-/* crafting bar */
-#partsProgress{
-	/* width:150px; */
-}
-#moneyProgress{
 
+.coin{
+	width: 50px;
+    height: 50px;
+    background-size: contain;
+    z-index: -1;
+    position: absolute;
+	animation-name:            rotate; 
+    animation-duration:        0.5s; 
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+	top: 275px;
 }
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to { 
+    transform: rotate(360deg);
+  }
+}
+
+.extraBitsBottomExtended {
+height:200px;
+}
+
+.extraBitsBottomRetracted {
+height:30px;
+}
+
+.jC1 {
+border-color:#816f53;
+}
+
+.jC2 {
+border-color:#eabe7c;
+}
+
+.jC3 {
+border-color:#cdb590;
+}
+
+.jC4 {
+border-color:#896038;
+}
+
+.label1 {
+font-size:21px;
+}
+
+.label2 {
+font-size:16px;
+}
+
+.label3 {
+font-size:30px;
+}
+
+.label4 {
+font-size:40px;
+}
+
+.locked {
+display:none;
+}
+
+.offline {
+margin-top:5px;
+text-align:center;
+}
+
+.options {
+bottom:0;
+position:absolute;
+}
+
 .progress {
-	height: 30px;
-	margin-bottom: 10px;
-	overflow: hidden;
-	background-color: #816f53;
-	border-radius: 5px;
-	border: 2px solid #d7a05b;
-}
-.progressBar { 
-	float: left;
-	width: 0;
-	height: 100%;
-	font-size: 20px;
-	line-height: 30px;
-	color: #513e2e;
-	text-align: center;
-	background-color: #cdb590;
+background-color:#816f53;
+border:2px solid #d7a05b;
+border-radius:5px;
+height:30px;
+margin-bottom:10px;
+overflow:hidden;
+width:150px;
 }
 
-/* invisible */
-.locked{display:none;}
+.progressBar {
+background-color:#cdb590;
+color:#513e2e;
+float:left;
+font-size:20px;
+height:100%;
+line-height:30px;
+text-align:center;
+width:0;
+}
+
+.slotButton {
+margin:5px;
+}
+
+.spinnerExtraBits {
+background-color:#322923;
+border:solid 5px #cdb590;
+border-radius:10px;
+z-index:-2;
+}
+
+.upgrade {
+margin-top:5px;
+}
+
+body {
+background-image:url(../img/bg.png);
+color:#d7a05b;
+font-family:Abel, sans-serif;
+margin:0;
+padding:0;
+}
