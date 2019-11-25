@@ -5,13 +5,13 @@ position:absolute;
 }
 
 #buildingContainer {
-grid-area:build;
 position:absolute;
 top:350px;
+width: 500px;
 }
 
 #costToPlay {
-bottom:0;
+bottom:320px;
 color:#ffebcc;
 font-size:50px;
 margin:auto;
@@ -20,11 +20,11 @@ pointer-events:none;
 position:absolute;
 text-align-last:center;
 width:inherit;
-z-index:1;
+z-index:4;
+
 }
 
 #craftingContainer {
-grid-area:craft;
 position:absolute;
 }
 
@@ -49,7 +49,7 @@ background:#513e2e;
 border:2px solid #eabe7c;
 border-radius:10px;
 height:225px;
-left:35%;
+left: 25%;
 position:absolute;
 top:30%;
 width:500px;
@@ -61,15 +61,16 @@ height:100%;
 left:0;
 opacity:0;
 pointer-events:auto;
-position:absolute;
+position:relative;
 top:0;
 width:100%;
-z-index:1;
+z-index:100;
 }
 
 #game {
 height:100%;
 width:100%;
+background-image:url(../img/bg.png);
 }
 
 #jackpotContainer {
@@ -86,6 +87,8 @@ padding:0 15px;
 margin:5px auto;
 padding:5px;
 width:fit-content;
+position: relative;
+    z-index: 2;
 }
 
 #jackpotTitle {
@@ -99,15 +102,7 @@ margin-bottom:5px;
 padding:0 10px;
 }
 
-#oddsA1,#oddsA2,#oddsA3,#oddsA4,#oddsA5,#oddsA6,#oddsA7,#oddsD1,#oddsD2,#oddsD3,#oddsD4,#oddsD5,#oddsD6,#oddsD7 {
-background-size:20px;
-display:block;
-height:20px;
-margin:5px 0 5px 5px;
-width:20px;
-}
-
-#oddsB1,#oddsB2,#oddsB3,#oddsB4,#oddsB5,#oddsB6,#oddsB7,#oddsC1,#oddsC2,#oddsC3,#oddsC4,#oddsC5,#oddsC6,#oddsC7 {
+#oddsA1,#oddsA2,#oddsA3,#oddsA4,#oddsA5,#oddsA6,#oddsA7,#oddsA8,#oddsA9,#oddsA10,#oddsB1,#oddsB2,#oddsB3,#oddsB4,#oddsB5,#oddsB6,#oddsB7,#oddsB8,#oddsB9,#oddsB10,#oddsC1,#oddsC2,#oddsC3,#oddsC4,#oddsC5,#oddsC6,#oddsC7,#oddsC8,#oddsC9,#oddsC10,#oddsD1,#oddsD2,#oddsD3,#oddsD4,#oddsD5,#oddsD6,#oddsD7,#oddsD8 {
 background-size:20px;
 display:block;
 height:20px;
@@ -120,7 +115,7 @@ left:20px;
 position:relative;
 top:20px;
 width:320px;
-z-index:-2
+z-index:1
 }
 
 #oddsContainer1,#oddsContainer2,#oddsContainer3 {
@@ -141,7 +136,7 @@ left:0;
 position:absolute;
 }
 
-#oddsE1,#oddsE2,#oddsE3,#oddsE4,#oddsE5,#oddsE6,#oddsE7 {
+#oddsE1,#oddsE2,#oddsE3,#oddsE4,#oddsE5,#oddsE6,#oddsE7,#oddsE8 {
 display:block;
 height:20px;
 margin:5px 0 5px 10px;
@@ -155,22 +150,28 @@ position:absolute;
 }
 
 #offlineProgress {
-background:#513e2e;
-border:2px solid #eabe7c;
-border-radius:10px;
-height:220px;
-left:800px;
-position:absolute;
-top:300px;
-width:300px;
+    background: #513e2e;
+    border: 2px solid #eabe7c;
+    border-radius: 10px;
+    height: 220px;
+    left: 35%;
+    position: relative;
+    top: 30%;
+    width: 300px;
 }
-
+#playerStatContainer {
+margin: 5;
+}
 #playerStatsOuterContainer {
-height: fit-content;
-left: 1500px;
-position: absolute;
-top: 0;
-width: fit-content;
+      height: 545px;
+    left: 10px;
+    position: absolute;
+    top: 10px;
+    width: 500px;
+    background: #322923;
+    border: 2px solid;
+    border-radius: 10px;
+    z-index: 10;
 }
 
 #popupContainer {
@@ -183,17 +184,17 @@ width:100%;
 background:#513e2e;
 border:2px solid #eabe7c;
 border-radius:10px;
-bottom:50px;
 font-size:30px;
 height:50px;
 left:5px;
 padding:5px;
 position:absolute;
 width:250px;
+    top: 495px;
+	    z-index: 11;
 }
 
 #sellingContainer {
-grid-area:sell-;
 left:200px;
 position:absolute;
 }
@@ -229,6 +230,8 @@ border-width:5px;
 margin-left:auto;
 margin-right:auto;
 width:fit-content;
+position: relative;
+z-index: 2;
 }
 
 #spinnerExtraBits {
@@ -241,21 +244,25 @@ width:inherit;
 }
 
 #spinnerOuterContainer {
-background-color:#322923;
-border-color:#cdb590;
-border-radius:10px;
-border-style:solid;
-border-top-left-radius:100px;
-border-top-right-radius:100px;
-border-width:5px;
-grid-area:spinn;
-height:310px;
-left:800px;
-position:absolute;
-top:50px;
-width:350px;
+       left: 590px;
+    position: absolute;
+    top: 20px;
+    width: 350px;
 }
-
+#spinnerBackground {
+    background-color: #322923;
+    border-color: #cdb590;
+    border-radius: 10px;
+    border-style: solid;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    border-width: 5px;
+    height: 310px;
+    left: -5px;
+    position: absolute;
+    width: 350px;
+    z-index: 2;
+}
 #spinnerWinningsContainer {
 color:#ffebcc;
 font-size:50px;
@@ -266,20 +273,19 @@ position:absolute;
 text-align-last:center;
 top:0;
 width:inherit;
-z-index:1;
+z-index:4;
 }
 
 #statContainer {
-grid-area:stats;
-position:absolute;
-top:200px;
-width:400px;
+   position: absolute;
+    top: 200px;
+    width: 500px;
 }
 
 #upgradeContainer {
 grid-area:upgra;
 position:absolute;
-top:600px;
+top:500px;
 }
 
 #upgrades {
@@ -315,8 +321,11 @@ background-image:url(../img/5.png);
 background-image:url(../img/6.png);
 }
 
-.a7,.coin {
+.a7 {
 background-image:url(../img/7.png);
+}
+.a8,.coin{
+background-image:url(../img/8.png);
 }
 
 .block {
@@ -360,7 +369,7 @@ text-decoration:none;
 	width: 50px;
     height: 50px;
     background-size: contain;
-    z-index: -1;
+    z-index: 1;
     position: absolute;
 	animation-name:            rotate; 
     animation-duration:        0.5s; 
@@ -427,8 +436,9 @@ text-align:center;
 }
 
 .options {
-bottom:0;
-position:absolute;
+    position: relative;
+    width: fit-content;
+	bottom:40px;
 }
 
 .progress {
@@ -448,7 +458,7 @@ float:left;
 font-size:20px;
 height:100%;
 line-height:30px;
-text-align:center;
+text-align:right;
 width:0;
 }
 
@@ -460,7 +470,7 @@ margin:5px;
 background-color:#322923;
 border:solid 5px #cdb590;
 border-radius:10px;
-z-index:-2;
+z-index:1;
 }
 
 .upgrade {
@@ -468,9 +478,11 @@ margin-top:5px;
 }
 
 body {
-background-image:url(../img/bg.png);
 color:#d7a05b;
 font-family:Abel, sans-serif;
 margin:0;
 padding:0;
+width:1000px;
+height:600px;
+background-color: black;
 }

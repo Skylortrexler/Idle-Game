@@ -2,6 +2,7 @@ window.onload = function(){
 	initBuildings();
 	initItems();
 	initData();
+	initStats();
 	gameSave();
 	offlineOnLoad();
 	firstLaunch();
@@ -26,7 +27,10 @@ var date = new Date();
 	canMoney=0;//are required to
 	canMoney2=0;//prevent the bars
 	canC1=0;//from being spammed
-	canSpin=0
+	canC2=0;
+	canSpin=0;
+	stats=[];
+	
 	
 	game={
 	parts:0,
@@ -37,7 +41,7 @@ var date = new Date();
 	time:date.getTime(),
 	firstLaunchOneOff:0,
 	rollingJackpot:1000000,
-	stats:[0,0,0,0,0,0]
+	stats:[]
 	};
 	
 	
@@ -110,35 +114,62 @@ function spinSlots(){
 		s1=0;
 		s2=0;
 		s3=0;
-		trueSeed=randomInt(0,20000);
+		trueSeed=randomInt(0,999);
 		ts1=0;
 		ts2=0;
 		ts3=0;
 		
 		switch(true){
-			case trueSeed>=0 && trueSeed<=50:
+			case trueSeed>=0 && trueSeed<=4:
 				ts1=1;ts2=1;ts3=1;
 			break;
-			case trueSeed>=51 && trueSeed<=250:
+			case trueSeed>=5 && trueSeed<=14:
 				ts1=2;ts2=2;ts3=2;
 			break;
-			case trueSeed>=251 && trueSeed<=1000:
+			case trueSeed>=15 && trueSeed<34:
 				ts1=3;ts2=3;ts3=3;
 			break;
-			case trueSeed>=1001 && trueSeed<=2000:
+			case trueSeed>=35 && trueSeed<=69:
 				ts1=4;ts2=4;ts3=4;
 			break;
-			case trueSeed>=2001 && trueSeed<=3500:
+			case trueSeed>=70 && trueSeed<=119:
 				ts1=5;ts2=5;ts3=5;
 			break;
-			case trueSeed>=3501 && trueSeed<=6000:
+			case trueSeed>=120 && trueSeed<=189:
 				ts1=6;ts2=6;ts3=6;
 			break;
-			case trueSeed>=6001 && trueSeed<=11000:
+			case trueSeed>=190 && trueSeed<=269:
 				ts1=7;ts2=7;ts3=7;
 			break;
-			case trueSeed>=11001 && trueSeed<=20000:
+			case trueSeed>=270 && trueSeed<=369:
+				ts1=8;ts2=8;ts3=8;
+			break;
+			case trueSeed>=370 && trueSeed<=419:
+				ts1=8;ts2=8;ts3=randomInt(1,7);
+			break;
+			case trueSeed>=420 && trueSeed<=469:
+				ts1=8;ts2=randomInt(1,7);ts3=8;
+			break;
+			case trueSeed>=470 && trueSeed<=519:
+				ts1=randomInt(1,7);ts2=8;ts3=8;
+			break;
+			case trueSeed>=520 && trueSeed<=579:
+				ts1=8;ts2=randomInt(1,7);ts3=randomInt(1,7);
+			break;
+			case trueSeed>=580 && trueSeed<=639:
+				ts1=randomInt(1,7);ts2=randomInt(1,7);ts3=8;
+			break;
+			case trueSeed>=640 && trueSeed<=699:
+				ts1=randomInt(1,7);ts2=8;ts3=randomInt(1,7);
+			break;
+			case trueSeed>=700 && trueSeed<=799:
 				ts1=randomInt(1,5);ts2=randomInt(1,5);ts3=randomInt(6,7);
+			break;
+			case trueSeed>=800 && trueSeed<=899:
+				ts1=randomInt(1,5);ts2=randomInt(6,7);ts3=randomInt(1,5);
+			break;
+			case trueSeed>=900 && trueSeed<=999:
+				ts1=randomInt(6,7);ts2=randomInt(1,5);ts3=randomInt(1,5);
 			break;
 		}
 		
@@ -148,8 +179,8 @@ function spinSlots(){
 		s1T=setInterval(function(){
 			s1++;
 			let slotTile = document.getElementById("slot1");
-			if (slotTile.className=="a7"){
-				slotTile.className = "a0";
+			if (slotTile.className=="a8"){
+				slotTile.className = "a1";
 			}
 			if (s1>=slot1Seed){
 				clearInterval(s1T);
@@ -160,8 +191,8 @@ function spinSlots(){
 		s2T=setInterval(function(){
 			s2++;
 			let slotTile = document.getElementById("slot2");
-			if (slotTile.className=="a7"){
-				slotTile.className = "a0";
+			if (slotTile.className=="a8"){
+				slotTile.className = "a1";
 			}
 			if (s2>=slot2Seed){
 				clearInterval(s2T);
@@ -172,8 +203,8 @@ function spinSlots(){
 		s3T=setInterval(function(){
 			s3++;
 			let slotTile = document.getElementById("slot3");
-			if (slotTile.className=="a7"){
-				slotTile.className = "a0";
+			if (slotTile.className=="a8"){
+				slotTile.className = "a1";
 			}
 			if (s3>=slot3Seed){
 				clearInterval(s3T);
@@ -222,13 +253,13 @@ function winCheck(x,y,z){
 					potColor3.className="jC1";
 					}
 			},50);
-			coinFall(100);
+			coinFall(150);
 		break;
 		case x==2&&y==2&&z==2:
 			document.getElementById("spinnerWinningsText").innerHTML="JACKPOT!";
-			document.getElementById("spinnerWinningsValue").innerHTML="+$100,000";
-			game.money+=100000;
-			game.stats[5]+=100000;
+			document.getElementById("spinnerWinningsValue").innerHTML="+$10,000";
+			game.money+=10000;
+			game.stats[5]+=10000;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
 			let a=0;
 			let b=window.setInterval(function(){
@@ -243,23 +274,23 @@ function winCheck(x,y,z){
 					potColor3.className="jC1";
 					}
 			},50);
-			coinFall(50);
+			coinFall(100);
 		break;
 		case x==3&&y==3&&z==3:
-			document.getElementById("spinnerWinningsText").innerHTML="Minor Jackpot!";
-			document.getElementById("spinnerWinningsValue").innerHTML="+$10,000";
-			game.money+=10000;
-			game.stats[5]+=10000;
-			document.getElementById("money").innerHTML = game.money.toLocaleString();
-			coinFall(35);
-		break;
-		case x==4&&y==4&&z==4:
-			document.getElementById("spinnerWinningsText").innerHTML="Big Win!";
+			document.getElementById("spinnerWinningsText").innerHTML="Mini Jackpot!";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$1,000";
 			game.money+=1000;
 			game.stats[5]+=1000;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
-			coinFall(20);
+			coinFall(50);
+		break;
+		case x==4&&y==4&&z==4:
+			document.getElementById("spinnerWinningsText").innerHTML="Big Win!";
+			document.getElementById("spinnerWinningsValue").innerHTML="+$500";
+			game.money+=500;
+			game.stats[5]+=500;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			coinFall(40);
 		break;
 		case x==5&&y==5&&z==5:
 			document.getElementById("spinnerWinningsText").innerHTML="Small Win!";
@@ -267,9 +298,25 @@ function winCheck(x,y,z){
 			game.money+=100;
 			game.stats[5]+=100;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
-			coinFall(10);
+			coinFall(30);
 		break;
 		case x==6&&y==6&&z==6:
+			document.getElementById("spinnerWinningsText").innerHTML=" ";
+			document.getElementById("spinnerWinningsValue").innerHTML="+$50";
+			game.money+=50;
+			game.stats[5]+=50;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			coinFall(20);
+		break;
+		case x==7&&y==7&&z==7:
+			document.getElementById("spinnerWinningsText").innerHTML=" ";
+			document.getElementById("spinnerWinningsValue").innerHTML="+$30";
+			game.money+=30;
+			game.stats[5]+=30;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			coinFall(10);
+		break;
+		case x==8&&y==8&&z==8:
 			document.getElementById("spinnerWinningsText").innerHTML=" ";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$10";
 			game.money+=10;
@@ -277,15 +324,31 @@ function winCheck(x,y,z){
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
 			coinFall(5);
 		break;
-		case x==7&&y==7&&z==7:
+		// case x==7&&y==7&&z==8||x==7&&y==7&&z==6||x==7&&y==8&&z==7||x==7&&y==8&&z==8||x==7&&y==8&&z==6||x==7&&y==6&&z==7||x==7&&y==6&&z==8||x==7&&y==6&&z==6||x==8&&y==7&&z==7||x==8&&y==7&&z==8||x==8&&y==7&&z==6||x==8&&y==8&&z==7||x==8&&y==8&&z==6||x==8&&y==6&&z==7||x==8&&y==6&&z==8||x==8&&y==6&&z==6||x==6&&y==7&&z==7||x==6&&y==7&&z==8||x==6&&y==7&&z==6||x==6&&y==8&&z==7||x==6&&y==8&&z==8||x==6&&y==8&&z==6||x==6&&y==6&&z==7||x==6&&y==6&&z==8:
+			// document.getElementById("spinnerWinningsText").innerHTML=" ";
+			// document.getElementById("spinnerWinningsValue").innerHTML="+$5";
+			// game.money+=5;
+			// game.stats[5]+=5;
+			// document.getElementById("money").innerHTML = game.money.toLocaleString();
+			// coinFall(1);
+		// break;
+		case x==8&&y==8||y==8&&z==8||x==8&&z==8:
 			document.getElementById("spinnerWinningsText").innerHTML=" ";
-			document.getElementById("spinnerWinningsValue").innerHTML="+$5";
-			game.money+=5;
-			game.stats[5]+=5;
+			document.getElementById("spinnerWinningsValue").innerHTML="+$6";
+			game.money+=6;
+			game.stats[5]+=6;
+			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			coinFall(2);
+		break;
+		case x==8||y==8||z==8:
+			document.getElementById("spinnerWinningsText").innerHTML=" ";
+			document.getElementById("spinnerWinningsValue").innerHTML="+$3";
+			game.money+=3;
+			game.stats[5]+=3;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
 			coinFall(1);
 		break;
-		case x!==z:
+		default:
 			document.getElementById("spinnerWinningsText").innerHTML=" ";
 			document.getElementById("spinnerWinningsValue").innerHTML="Try again!";
 		break;
@@ -301,7 +364,6 @@ function winCheck(x,y,z){
 	},30);
 
 }
-
 function coinFall(amount){ 
 	y=0;
 	coinPos2=0;
@@ -327,7 +389,7 @@ function coinFall(amount){
 			}
 		}
 		y++;
-		if(y>=500){
+		if(y>=600){
 			clearInterval(T);
 			for(x=1;x<=amount;x++){
 				let coin=document.getElementById("coin"+x);	
@@ -336,7 +398,6 @@ function coinFall(amount){
 		}
 	},1);
 }
-	
 function toggleOdds(){
 	let x=document.getElementById("oddsChart");
 	y=document.getElementById("extraBitsBottom");
@@ -345,6 +406,10 @@ function toggleOdds(){
 	y.classList.toggle("extraBitsBottomExtended");	
 }
 
+//--Toggle Stat Page--//
+function toggleStats(){
+	document.getElementById("playerStatsOuterContainer").classList.toggle("locked");
+}
 
 //--offline progression--//
 function offlineOnLoad(){
@@ -415,16 +480,37 @@ function offlineOnLoad2(){
 	},10);
 }
 //--Dynamically create objects--//
+function initStats(){
+	loadStat("Parts Crafted",0);
+	loadStat("Times Gambled",0);
+	loadStat("Parts Sold",0);
+	loadStat("C1 Crafted",0);
+	loadStat("C1 Sold",0);
+	loadStat("Gambling Profits",0);
+	loadStat("C2 Crafted",0);
+	loadStat("C2 Sold",0);
+}
+
+function loadStat(name,value){
+	let id=stats.length;
+	stats[id]=new Stat();
+	stats[id]=name;
+	if(localStorage.getItem('idleParts.gameSave') == null){
+		game.stats[id]=value;	
+	}
+}
+
 function initItems(){//name,value
-	loadItem("C1",100);
+	loadItem("C1",50);
+	loadItem("C2",100);
 }
 function loadItem(name,value){
 	let id = items.length;
 	items[id]=new Item();
-	items[id].name=name;
 	items[id].value=value;
+	items[id].name=name;
 	if(localStorage.getItem('idleParts.gameSave') == null){//sets owned items to zero for all items to prevent NaN
-	game.items[id] = 0;
+		game.items[id] = 0;
 	}
 }
 
@@ -460,6 +546,7 @@ function updateData(){
 	document.getElementById("building3PerSec").innerHTML = "Parts/sec " + buildings[2].perSec;
 	document.getElementById("money").innerHTML = game.money.toLocaleString();
 	document.getElementById("c1Qty").innerHTML=game.items[0].toLocaleString();
+	document.getElementById("c2Qty").innerHTML=game.items[1].toLocaleString();
 	document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 	document.getElementById("jackpotContainer").innerHTML ="$"+game.rollingJackpot.toLocaleString();
 }
@@ -468,12 +555,14 @@ function updateParts(){
 	document.getElementById("money").innerHTML = game.money.toLocaleString();
 }
 function updateStats(){
-	document.getElementById("partsClicked").innerHTML="Parts Crafted: "+game.stats[0];
-	document.getElementById("timesGambled").innerHTML="Times Gambled: "+game.stats[1];
-	document.getElementById("partsSold").innerHTML="Parts Sold: "+game.stats[2];
-	document.getElementById("c1Crafted").innerHTML="C1 Crafted: "+game.stats[3];
-	document.getElementById("c1Sold").innerHTML="C1 Sold: "+game.stats[4];
-	document.getElementById("gambleProfit").innerHTML="Gambling Profits: "+game.stats[5];
+	document.getElementById("partsClicked").innerHTML=stats[0]+": "+game.stats[0];
+	document.getElementById("timesGambled").innerHTML=stats[1]+": "+game.stats[1];
+	document.getElementById("partsSold").innerHTML=stats[2]+": "+game.stats[2];
+	document.getElementById("c1Crafted").innerHTML=stats[3]+": "+game.stats[3];
+	document.getElementById("c1Sold").innerHTML=stats[4]+": "+game.stats[4];
+	document.getElementById("c2Crafted").innerHTML=stats[6]+": "+game.stats[6];
+	document.getElementById("c2Sold").innerHTML=stats[7]+": "+game.stats[7];
+	document.getElementById("gambleProfit").innerHTML=stats[5]+": "+game.stats[5];
 }
 
 function updateUpgrades(){
@@ -532,6 +621,8 @@ function building() {
 function Item(){
 	this.name="name";
 	this.value=0;
+}
+function Stat(){
 }
 
 
@@ -696,11 +787,11 @@ function sellC1(){
 	}
 };
 
-//--Crafting C1--//
+//--Crafting C--//
 function craftC1(){
-	if(canC1==0 && game.parts>=50){
+	if(canC1==0 && game.parts>=10){
 		canC1=1;
-		game.parts-=50;
+		game.parts-=10;
 		document.getElementById("parts").innerHTML = game.parts.toLocaleString();
 		let C1progress=0;
 		let progresstimer = window.setInterval(function(){
@@ -714,6 +805,29 @@ function craftC1(){
 				document.getElementById("c1Bar").style.width=C1progress+"%";
 				canC1=0;
 				document.getElementById("c1Qty").innerHTML=game.items[0];
+			};
+		},100);
+	}
+};
+function craftC2(){
+	if(canC2==0 && game.parts>=10 && game.items[0]>=5){
+		canC1=1;
+		game.parts-=10;
+		game.items[0]-=5;
+		document.getElementById("parts").innerHTML = game.parts.toLocaleString();
+		document.getElementById("c1Qty").innerHTML=game.items[0];
+		let C2progress=0;
+		let progresstimer = window.setInterval(function(){
+			C2progress++;
+			document.getElementById("c2Bar").style.width=C2progress+"%";
+			document.getElementById("c2ProgressSpan").innerHTML=C2progress+"%";
+			if(C2progress>=100){
+				game.items[1]+=1;
+				game.stats[6]+=1;
+				clearInterval(progresstimer);
+				document.getElementById("c2Bar").style.width=C2progress+"%";
+				canC2=0;
+				document.getElementById("c2Qty").innerHTML=game.items[1];
 			};
 		},100);
 	}
