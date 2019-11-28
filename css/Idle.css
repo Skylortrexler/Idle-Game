@@ -88,7 +88,7 @@ margin:5px auto;
 padding:5px;
 width:fit-content;
 position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 #jackpotTitle {
@@ -106,9 +106,14 @@ padding:0 10px;
 background-size:20px;
 display:block;
 height:20px;
-margin:5px 0;
+margin:3px 0;
 width:20px;
 }
+#oddsB9,#oddsB10{
+font-weight:bold;
+text-align: center;
+}
+
 
 #oddsChart {
 left:20px;
@@ -132,14 +137,14 @@ position:absolute;
 
 #oddsContainer5 {
 display:inline-block;
-left:0;
+left:-5px;
 position:absolute;
 }
 
-#oddsE1,#oddsE2,#oddsE3,#oddsE4,#oddsE5,#oddsE6,#oddsE7,#oddsE8 {
+#oddsE1,#oddsE2,#oddsE3,#oddsE4,#oddsE5,#oddsE6,#oddsE7,#oddsE8,#oddsE9,#oddsE10 {
 display:block;
 height:20px;
-margin:5px 0 5px 10px;
+margin:3px 0 3px 10px;
 text-align:right;
 }
 
@@ -231,7 +236,7 @@ margin-left:auto;
 margin-right:auto;
 width:fit-content;
 position: relative;
-z-index: 2;
+z-index: 3;
 }
 
 #spinnerExtraBits {
@@ -261,7 +266,7 @@ width:inherit;
     left: -5px;
     position: absolute;
     width: 350px;
-    z-index: 2;
+    z-index: 3;
 }
 #spinnerWinningsContainer {
 color:#ffebcc;
@@ -369,7 +374,7 @@ text-decoration:none;
 	width: 50px;
     height: 50px;
     background-size: contain;
-    z-index: 1;
+    z-index: 2;
     position: absolute;
 	animation-name:            rotate; 
     animation-duration:        0.5s; 
@@ -387,7 +392,7 @@ text-decoration:none;
 }
 
 .extraBitsBottomExtended {
-height:200px;
+height:250px;
 }
 
 .extraBitsBottomRetracted {

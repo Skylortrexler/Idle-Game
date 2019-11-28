@@ -102,8 +102,12 @@ function spinSlots(){
 		let a=100;
 		let T=window.setInterval(function(){
 		a--;
-		document.getElementById("costToPlay").style.opacity=a+"%";
-		document.getElementById("costToPlay").style.bottom=a-100;
+		document.getElementById("costToPlay").style.opacity= a+"%";
+		if(document.getElementById("extraBitsBottom").classList.contains("extraBitsBottomExtended")==true){
+			document.getElementById("costToPlay").style.bottom=a+130;
+		}else{
+			document.getElementById("costToPlay").style.bottom=a-100;
+		}
 		if(a<=0){
 			clearInterval(T);
 		}
@@ -253,7 +257,7 @@ function winCheck(x,y,z){
 					potColor3.className="jC1";
 					}
 			},50);
-			coinFall(150);
+			coinFall(100);
 		break;
 		case x==2&&y==2&&z==2:
 			document.getElementById("spinnerWinningsText").innerHTML="JACKPOT!";
@@ -285,31 +289,31 @@ function winCheck(x,y,z){
 			coinFall(50);
 		break;
 		case x==4&&y==4&&z==4:
-			document.getElementById("spinnerWinningsText").innerHTML="Big Win!";
+			document.getElementById("spinnerWinningsText").innerHTML="Big Bills!";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$500";
 			game.money+=500;
 			game.stats[5]+=500;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
-			coinFall(40);
+			coinFall(35);
 		break;
 		case x==5&&y==5&&z==5:
-			document.getElementById("spinnerWinningsText").innerHTML="Small Win!";
+			document.getElementById("spinnerWinningsText").innerHTML="Small Bills!";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$100";
 			game.money+=100;
 			game.stats[5]+=100;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
-			coinFall(30);
+			coinFall(25);
 		break;
 		case x==6&&y==6&&z==6:
-			document.getElementById("spinnerWinningsText").innerHTML=" ";
+			document.getElementById("spinnerWinningsText").innerHTML="Pile of Coins!";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$50";
 			game.money+=50;
 			game.stats[5]+=50;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
-			coinFall(20);
+			coinFall(15);
 		break;
 		case x==7&&y==7&&z==7:
-			document.getElementById("spinnerWinningsText").innerHTML=" ";
+			document.getElementById("spinnerWinningsText").innerHTML="Fistful of Coins";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$30";
 			game.money+=30;
 			game.stats[5]+=30;
@@ -317,7 +321,7 @@ function winCheck(x,y,z){
 			coinFall(10);
 		break;
 		case x==8&&y==8&&z==8:
-			document.getElementById("spinnerWinningsText").innerHTML=" ";
+			document.getElementById("spinnerWinningsText").innerHTML="A Few Coins";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$10";
 			game.money+=10;
 			game.stats[5]+=10;
@@ -333,19 +337,25 @@ function winCheck(x,y,z){
 			// coinFall(1);
 		// break;
 		case x==8&&y==8||y==8&&z==8||x==8&&z==8:
-			document.getElementById("spinnerWinningsText").innerHTML=" ";
+			document.getElementById("spinnerWinningsText").innerHTML="Two Coins";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$6";
 			game.money+=6;
 			game.stats[5]+=6;
+			game.rollingJackpot+=1000;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			document.getElementById("jackpotContainer").innerHTML = "$"+game.rollingJackpot.toLocaleString();
+			document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 			coinFall(2);
 		break;
 		case x==8||y==8||z==8:
-			document.getElementById("spinnerWinningsText").innerHTML=" ";
+			document.getElementById("spinnerWinningsText").innerHTML="One Coin";
 			document.getElementById("spinnerWinningsValue").innerHTML="+$3";
 			game.money+=3;
 			game.stats[5]+=3;
+			game.rollingJackpot+=500;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
+			document.getElementById("jackpotContainer").innerHTML = "$"+game.rollingJackpot.toLocaleString();
+			document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 			coinFall(1);
 		break;
 		default:
@@ -365,38 +375,41 @@ function winCheck(x,y,z){
 
 }
 function coinFall(amount){ 
-	y=0;
+	let y=0;
 	coinPos2=0;
 	for(x=1;x<=amount;x++){
-			let coinDiv = document.createElement("div");
-			coinDiv.classList="coin";
-			coinDiv.id="coin"+x;
-			document.getElementById("payoutCoinsContainer").appendChild(coinDiv);
-			let coin=document.getElementById("coin"+x);	
-			coinPos=randomInt(0,275);
-			coinPos2=400-coinPos;
-			coin.style.left=randomInt(10,290);
-			coin.style.top=coinPos;
-			coin.style.opacity=(coinPos2+100)/100;
-		}
-	T=window.setInterval(function(){
-		for(x=1;x<=amount;x++){
-			let coin=document.getElementById("coin"+x);	
-			coin.style.marginTop=y;
-			coin.style.opacity-=0.01;
-			if(coin.style.opacity<=0){
-				coin.classList="locked";
-			}
-		}
+		let coinDiv = document.createElement("div");
+		coinDiv.classList="coin";
+		coinDiv.id="coin"+x;
+		document.getElementById("payoutCoinsContainer").appendChild(coinDiv);
+		let coin=document.getElementById("coin"+x);	
+		coinPos=randomInt(0,275);
+		coinPos2=400-coinPos;
+		coin.style.left=randomInt(10,290);
+		coin.style.top=coinPos;
+		coin.style.opacity=(coinPos2+100)/100;
+	}
+	let q=window.setInterval(function(){
 		y++;
-		if(y>=600){
-			clearInterval(T);
-			for(x=1;x<=amount;x++){
+		for(x=1;x<=amount;x++){
+			if(document.getElementById("coin"+x)!==null){
 				let coin=document.getElementById("coin"+x);	
-				document.getElementById("payoutCoinsContainer").removeChild(coin);
+				coin.style.marginTop=y;
+				coin.style.opacity-=0.01;
+				if(coin.style.opacity<=0){
+					coin.classList="locked";
+				}
 			}
 		}
+		
 	},1);
+	setTimeout(function(){
+		let coin=document.getElementById("payoutCoinsContainer");	
+			while (coin.firstChild){
+				coin.removeChild(coin.firstChild)
+			}
+			window.clearInterval(q);
+	},2000);
 }
 function toggleOdds(){
 	let x=document.getElementById("oddsChart");
