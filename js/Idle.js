@@ -26,6 +26,7 @@ var date = new Date();
 	canParts=0;//all of the Cans  
 	canMoney=0;//are required to
 	canMoney2=0;//prevent the bars
+	canMoney3=0;
 	canC1=0;//from being spammed
 	canC2=0;
 	canSpin=0;
@@ -53,7 +54,30 @@ if(	localStorage.getItem('idleParts.gameSave') !== null){//if there is a save
 		
 }
 ////////////////////////////////////////////////////////////////////////////
-
+function buySlot(){
+	if(game.items[0]>=10 && game.items[1]>=10 && game.parts>=100){
+		buyUpgrade(4);
+		game.items[0]-=10;
+		game.items[1]-=10;
+		game.parts-=100;
+	}else{
+		let text=document.getElementById("floatingText");
+		text.innerHTML="You need 100 Parts, 10 C1 and 10 C2";
+		text.style.opacity=1;
+		text.style.left="10%";
+		text.style.top="50";
+		let x=100;
+		let T=window.setInterval(function(){
+		x--;
+		text.style.opacity=x+"%";
+		text.style.top=150-x;
+			if(x<=0){
+			clearInterval(T);
+			lockItem("offlineProgressContainer");
+			}
+		},15);
+	}
+}
 ////////////////////////////////////////////////////////////////////////////
 
 
@@ -94,7 +118,7 @@ function spinSlots(){
 		game.rollingJackpot+=100;
 		game.stats[1]+=1;
 		game.stats[5]-=10;
-		document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
+		// document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 		document.getElementById("jackpotContainer").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 		document.getElementById("money").innerHTML = game.money.toLocaleString();
 		canSpin=1;
@@ -344,7 +368,7 @@ function winCheck(x,y,z){
 			game.rollingJackpot+=1000;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
 			document.getElementById("jackpotContainer").innerHTML = "$"+game.rollingJackpot.toLocaleString();
-			document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
+			// document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 			coinFall(2);
 		break;
 		case x==8||y==8||z==8:
@@ -355,7 +379,7 @@ function winCheck(x,y,z){
 			game.rollingJackpot+=500;
 			document.getElementById("money").innerHTML = game.money.toLocaleString();
 			document.getElementById("jackpotContainer").innerHTML = "$"+game.rollingJackpot.toLocaleString();
-			document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
+			// document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 			coinFall(1);
 		break;
 		default:
@@ -515,7 +539,7 @@ function loadStat(name,value){
 
 function initItems(){//name,value
 	loadItem("C1",50);
-	loadItem("C2",100);
+	loadItem("C2",500);
 }
 function loadItem(name,value){
 	let id = items.length;
@@ -560,7 +584,7 @@ function updateData(){
 	document.getElementById("money").innerHTML = game.money.toLocaleString();
 	document.getElementById("c1Qty").innerHTML=game.items[0].toLocaleString();
 	document.getElementById("c2Qty").innerHTML=game.items[1].toLocaleString();
-	document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
+	// document.getElementById("oddsD1").innerHTML = "$"+game.rollingJackpot.toLocaleString();
 	document.getElementById("jackpotContainer").innerHTML ="$"+game.rollingJackpot.toLocaleString();
 }
 function updateParts(){
@@ -575,7 +599,7 @@ function updateStats(){
 	document.getElementById("c1Sold").innerHTML=stats[4]+": "+game.stats[4];
 	document.getElementById("c2Crafted").innerHTML=stats[6]+": "+game.stats[6];
 	document.getElementById("c2Sold").innerHTML=stats[7]+": "+game.stats[7];
-	document.getElementById("gambleProfit").innerHTML=stats[5]+": "+game.stats[5];
+	document.getElementById("gambleProfit").innerHTML=stats[5]+": "+game.stats[5].toLocaleString();
 }
 
 function updateUpgrades(){
@@ -622,6 +646,10 @@ function updateUpgrades(){
 	if(game.upgrades[3]==1){
 		game.upgrades=[];
 		updateUpgrades();
+	}
+	if(game.upgrades[4]==1){
+		lockItem("unlockSlot");
+		unlockItem("spinnerOuterContainer");		
 	}
 }
 
@@ -709,7 +737,7 @@ function manualSave(){
 
 //Global tick timer
 var Timerparts = window.setInterval(function(){partsTick()}, 1000);
-var TimerUpdate = window.setInterval(function(){updateTick();updateStats();}, 1000);
+var TimerUpdate = window.setInterval(function(){updateTick();updateData();}, 1000);
 var Timermoney = window.setInterval(function(){moneyTick()},1000);
 
 
@@ -750,7 +778,7 @@ function gatherParts(){
 				document.getElementById("parts").innerHTML = game.parts.toLocaleString();
 				canParts=0;
 			};
-		}, 20);
+		}, 10);// x/10=sec to craft
 	};
 };
 
@@ -777,7 +805,7 @@ function sellParts(){
 	}
 };
 
-//--Selling C1--//
+//--Selling C--//
 function sellC1(){
 	if(canMoney2==0){
 		canMoney2=1;
@@ -788,13 +816,34 @@ function sellC1(){
 			document.getElementById("money2ProgressSpan").innerHTML=sellprogress+"%";
 			if(sellprogress>=100){
 				game.money+=rounddown(game.items[0]*items[0].value,0);
-				game.items[0]=0;
 				game.stats[4]+=rounddown(game.items[0],0);
+				game.items[0]=0;
 				clearInterval(progresstimer);
 				document.getElementById("money2Bar").style.width=sellprogress+"%";
 				document.getElementById("money").innerHTML = game.money.toLocaleString();
 				document.getElementById("c1Qty").innerHTML=game.items[0];
-				canMoney=0;
+				canMoney2=0;
+			};
+		},50);
+	}
+};
+function sellC2(){
+	if(canMoney3==0){
+		canMoney3=1;
+		let sellprogress=0;
+		let progresstimer = window.setInterval(function(){
+			sellprogress++;
+			document.getElementById("money3Bar").style.width=sellprogress+"%";
+			document.getElementById("money3ProgressSpan").innerHTML=sellprogress+"%";
+			if(sellprogress>=100){
+				game.money+=rounddown(game.items[1]*items[1].value,0);
+				game.stats[7]+=rounddown(game.items[1],0);
+				game.items[1]=0;
+				clearInterval(progresstimer);
+				document.getElementById("money3Bar").style.width=sellprogress+"%";
+				document.getElementById("money").innerHTML = game.money.toLocaleString();
+				document.getElementById("c1Qty").innerHTML=game.items[1];
+				canMoney3=0;
 			};
 		},50);
 	}
@@ -819,7 +868,9 @@ function craftC1(){
 				canC1=0;
 				document.getElementById("c1Qty").innerHTML=game.items[0];
 			};
-		},100);
+		},50);
+	}else{
+		null
 	}
 };
 function craftC2(){
@@ -842,7 +893,7 @@ function craftC2(){
 				canC2=0;
 				document.getElementById("c2Qty").innerHTML=game.items[1];
 			};
-		},100);
+		},50);
 	}
 };
 
